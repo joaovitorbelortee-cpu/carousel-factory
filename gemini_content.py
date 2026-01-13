@@ -18,18 +18,27 @@ API_KEY = os.getenv("GEMINI_API_KEY")
 def configure_gemini(api_key):
     genai.configure(api_key=api_key)
 
-def generate_carousel_script(topic, niche_theme="money"):
+def generate_carousel_script(topic, niche_theme="money", credentials=None):
     """
     Gera um roteiro de carrossel JSON estruturado.
+    Aceita credentials (OAuth) ou usa API_KEY do env.
     """
-    if not API_KEY:
-        raise ValueError("❌ ERRO: GEMINI_API_KEY não encontrada! Configure no arquivo .env ou no painel.")
+    model = None
+    
+    if credentials:
+        # Modo OAuth (Gemini Auth)
+        genai.configure(credentials=credentials)
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+    elif API_KEY:
+        # Modo API Key
+        configure_gemini(API_KEY)
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+    else:
+        # Sem auth definida
+        raise ValueError("❌ ERRO: Nenhuma forma de autenticação (OAuth ou API KEY) encontrada!")
 
-    configure_gemini(API_KEY)
-    
-    # Modelo rápido (Flash é mais rápido que Pro, se disponível, senão Pro)
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    
     prompt = f"""
     ATUE COMO: Um General Estoico Moderno. Frio, calculista e brutalmente honesto.
     MISSÃO: Escrever a copy (texto) para um carrossel de Instagram sobre: "{topic}".
@@ -66,27 +75,21 @@ def generate_carousel_script(topic, niche_theme="money"):
     }}
     """
     
-    try:
-        response = model.generate_content(prompt)
-        text = response.text.strip()
-        
-        # Limpar markdown se houver
-        if text.startswith("```json"):
-            text = text[7:-3]
-        
-        data = json.loads(text)
-        return data
-    except Exception as e:
-        print(f"❌ Erro no Gemini: {e}")
-        # Fallback de emergência para não travar
-        return {
-            "niche": niche_theme,
-            "slides": [
-                {"type": "cover", "title": f"Dicas sobre {topic}", "subtitle": "Confira agora"},
-                {"type": "content", "title": "Erro na IA", "text": "Não conseguimos gerar o texto. Verifique sua API Key."},
-                {"type": "cta", "text": "Tente novamente"}
-            ]
-        }
+    # Sem try/catch para garantir que ERROS apareçam e NÃO use fallback
+    # "nao quero modo demonstração" -> Usuario quer ver o erro se falhar.
+    
+    response = model.generate_content(prompt)
+    if not response.text:
+         raise ValueError("Gemini retornou resposta vazia (Bloqueio de segurança ou erro interno).")
+         
+    text = response.text.strip()
+    
+    # Limpar markdown se houver
+    if text.startswith("```json"):
+        text = text[7:-3]
+    
+    data = json.loads(text)
+    return data
 
 if __name__ == "__main__":
     # Teste (vai falhar se não tiver key)
