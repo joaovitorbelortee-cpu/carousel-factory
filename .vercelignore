@@ -1,0 +1,14 @@
+output/
+__pycache__/
+*.pyc
+*.pyo
+venv/
+env/
+.venv/
+.git/
+.github/
+__MACOSX/
+.DS_Store
+*.zip
+*.log
+firebase-adminsdk.json

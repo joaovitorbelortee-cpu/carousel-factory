@@ -79,9 +79,18 @@ HTML_TEMPLATE = '''
         <div class="bento-card p-8">
             <input type="email" id="email" placeholder="Email" class="w-full glass p-3 rounded mb-3 text-white">
             <input type="password" id="password" placeholder="Senha" class="w-full glass p-3 rounded mb-4 text-white">
-            <button onclick="login()" class="w-full bg-yellow-500 text-black font-bold p-3 rounded hover:bg-yellow-400 transition">
-                ENTRAR NO SISTEMA
+            <button onclick="login()" class="w-full bg-yellow-500 text-black font-bold p-3 rounded hover:bg-yellow-400 transition mb-3">
+                ENTRAR (FIREBASE)
             </button>
+            <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-gray-700"></div>
+                <span class="flex-shrink-0 mx-4 text-gray-500 text-xs">OU</span>
+                <div class="flex-grow border-t border-gray-700"></div>
+            </div>
+            <a href="/google_login" class="w-full bg-white text-black font-bold p-3 rounded hover:bg-gray-200 transition flex justify-center items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.11c-.22-.66-.35-1.36-.35-2.11s.13-1.45.35-2.11V7.05H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.95l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.84c.87-2.6 3.3-4.51 6.16-4.51z" fill="#EA4335"/></svg>
+                ENTRAR COM GOOGLE
+            </a>
             <p id="login-error" class="text-red-500 mt-4 text-sm"></p>
         </div>
         
@@ -171,21 +180,34 @@ HTML_TEMPLATE = '''
         if (firebaseConfig.apiKey) {
             firebase.initializeApp(firebaseConfig);
         } else {
-            console.error("Firebase Config ausente");
+            console.log("Firebase Auth nao configurado. Modo apenas Gemini OAuth disponivel se configurado.");
         }
+
+        // Verificacao de OAuth do Backend (Injetado pelo Flask)
+        const GOOGLE_LOGGED_IN = {{ 'true' if logged_in_google else 'false' }};
 
         // Auth State Listener
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('app-screen').classList.remove('hidden');
-                document.getElementById('user-email').innerText = user.email;
-                loadGallery();
+                showApp(user.email);
+            } else if (GOOGLE_LOGGED_IN) {
+                showApp("Google OAuth User");
             } else {
-                document.getElementById('login-screen').classList.remove('hidden');
-                document.getElementById('app-screen').classList.add('hidden');
+                showLogin();
             }
         });
+
+        function showApp(email) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('app-screen').classList.remove('hidden');
+            document.getElementById('user-email').innerText = email;
+            loadGallery();
+        }
+
+        function showLogin() {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('app-screen').classList.add('hidden');
+        }
 
         async function login() {
             const email = document.getElementById('email').value;
@@ -304,62 +326,152 @@ def index():
         "apiKey": os.getenv("FIREBASE_API_KEY", ""),
         "projectId": os.getenv("FIREBASE_PROJECT_ID", "")
     }
-    return render_template_string(HTML_TEMPLATE, nichos=list(TEMAS_POR_NICHO.keys()), firebase_config=fb_config)
+    return render_template_string(HTML_TEMPLATE, 
+                                nichos=list(TEMAS_POR_NICHO.keys()), 
+                                firebase_config=fb_config,
+                                logged_in_google=bool(get_google_credentials()))
+
+# --- OAUTH CONFIG & ROUTES ---
+# Permite HTTP apenas para testes locais. Em prod (Vercel), deve usar HTTPS.
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' 
+
+# Configurações OAuth (Pega do ENV ou usa placeholder para não quebrar na inicializacao)
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+REDIRECT_URI = os.getenv('REDIRECT_URI') # Ex: https://seu-app.vercel.app/oauth2callback
+
+app.secret_key = os.getenv('SECRET_KEY', 'super_secret_key_change_me')
+
+@app.route('/google_login')
+def google_login():
+    if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
+        return "Erro: GOOGLE_CLIENT_ID e SECRET não configurados no servidor."
+        
+    # Cria o fluxo OAuth
+    # Escopos necessarios para o Gemini (Generative Language API)
+    scopes = ["https://www.googleapis.com/auth/generative-language.retriever", "https://www.googleapis.com/auth/cloud-platform"]
+    
+    from google_auth_oauthlib.flow import Flow
+    flow = Flow.from_client_config(
+        client_config={
+            "web": {
+                "client_id": GOOGLE_CLIENT_ID,
+                "client_secret": GOOGLE_CLIENT_SECRET,
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+            }
+        },
+        scopes=scopes,
+        redirect_uri=url_for('oauth2callback', _external=True) # Tenta gerar automatico
+    )
+    
+    authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes='true')
+    session['state'] = state
+    return redirect(authorization_url)
+
+@app.route('/oauth2callback')
+def oauth2callback():
+    state = session.get('state')
+    if not state:
+        return "Erro: Estado da sessao perdido. Tente novamente."
+        
+    try:
+        from google_auth_oauthlib.flow import Flow
+        flow = Flow.from_client_config(
+            client_config={
+                "web": {
+                    "client_id": GOOGLE_CLIENT_ID,
+                    "client_secret": GOOGLE_CLIENT_SECRET,
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                }
+            },
+            scopes=["https://www.googleapis.com/auth/generative-language.retriever", "https://www.googleapis.com/auth/cloud-platform"],
+            state=state,
+            redirect_uri=url_for('oauth2callback', _external=True)
+        )
+        
+        # HTTPS obrigatorio no Vercel para callback
+        authorization_response = request.url
+        if request.headers.get('X-Forwarded-Proto') == 'https':
+            authorization_response = authorization_response.replace('http:', 'https:')
+
+        flow.fetch_token(authorization_response=authorization_response)
+        credentials = flow.credentials
+        
+        # Salva credenciais na sessao (simplificado - ideal seria banco)
+        session['google_credentials'] = credentials_to_dict(credentials)
+        
+        return redirect(url_for('index'))
+    except Exception as e:
+        logger.error(f"Erro OAuth: {e}")
+        return f"Erro na autenticação: {e}"
+
+def credentials_to_dict(credentials):
+    return {
+        'token': credentials.token,
+        'refresh_token': credentials.refresh_token,
+        'token_uri': credentials.token_uri,
+        'client_id': credentials.client_id,
+        'client_secret': credentials.client_secret,
+        'scopes': credentials.scopes
+    }
+
+def get_google_credentials():
+    if 'google_credentials' in session:
+        from google.oauth2.credentials import Credentials
+        return Credentials(**session['google_credentials'])
+    return None
 
 @app.route('/generate_carousel', methods=['POST'])
 def handle_generate():
     if not verify_firebase_token() and FIREBASE_ENABLED:
-        return jsonify({"success": False, "message": "Unauthorized"}), 401
-        
+        return jsonify({"success": False, "message": "Unauthorized (Firebase)"}), 401
+    
+    # Tenta obter credenciais OAuth do usuario logado na sessao
+    oauth_creds = get_google_credentials()
+    
     data = request.json
     topic = data.get('topic', '')
     nicho = data.get('nicho', 'mentalidade')
     count = int(data.get('count', 5))
     
     try:
-        # Se nao tiver tema, pega um automatico do nicho
         if not topic:
             temas = get_temas_para_nicho(nicho, 1)
             topic = temas[0] if temas else "Disciplina e Foco"
         
-        logger.info(f"[GERAR] Nicho={nicho}, Tema={topic}")
+        logger.info(f"[GERAR] Nicho={nicho}, Tema={topic}, Auth={ 'OAuth' if oauth_creds else 'API Key'}")
+
         # Detectar ambiente Vercel (Serverless) - Nao usar threads
         is_vercel = os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME')
         
         if is_vercel:
-            # Modo Sincrono (Serverless)
-            try:
-                # 1. Gerar Roteiro
-                slides = generate_carousel_content(topic, nicho, count)
-                if not slides:
-                    return jsonify({"success": False, "message": "Falha ao gerar conteudo."})
+            # Sincrono
+            slides = generate_carousel_content(topic, nicho, count, credentials=oauth_creds)
+            if not slides: return jsonify({"success": False, "message": "Falha na geracao."})
+            name = f"{nicho}_{topic[:15]}_{datetime.now().strftime('%H%M')}".replace(' ', '_')
+            paths = generate_carousel(slides, "caverna", name)
+            return jsonify({"success": True, "folder": name, "slides": len(paths)})
+        else:
+            # Assincrono (Local) - Nota: Threads nao tem acesso a session flask.
+            # Localmente, melhor passar as credenciais/key explicitamente se for thread, 
+            # mas simplificando: Localmente usa API KEY do env geralmente.
+            # Se quiser OAuth local, precisaria passar o obj credentials pra thread.
+            
+            def run_job(creds_snapshot):
+                try:
+                    slides = generate_carousel_content(topic, nicho, count, credentials=creds_snapshot)
+                    if slides:
+                        name = f"{nicho}_{topic[:15]}_{datetime.now().strftime('%H%M')}".replace(' ', '_')
+                        generate_carousel(slides, "caverna", name)
+                except Exception as e:
+                    print(f"Erro bg: {e}")
 
-                # 2. Gerar Imagens
-                name = f"{nicho}_{topic[:15]}_{datetime.now().strftime('%H%M')}".replace(' ', '_')
-                paths = generate_carousel(slides, "caverna", name)
-                
-                return jsonify({"success": True, "folder": name, "slides": len(paths)})
-            except Exception as e:
-                logger.error(f"[ERRO] {e}")
-                return jsonify({"success": False, "message": str(e)})
+            thread = threading.Thread(target=run_job, args=(oauth_creds,))
+            thread.start()
+            return jsonify({"success": True, "message": "Job iniciado!"})
 
-        # Modo Assincrono (Local/VPS)
-        def run_job():
-            # Importar aqui para evitar circular imports
-            try:
-                # 1. Gerar Roteiro
-                slides = generate_carousel_content(topic, nicho, count)
-                if slides:
-                    name = f"{nicho}_{topic[:15]}_{datetime.now().strftime('%H%M')}".replace(' ', '_')
-                    generate_carousel(slides, "caverna", name)
-                
-            except Exception as e:
-                print(f"Erro no background: {e}")
-
-        thread = threading.Thread(target=run_job)
-        thread.start()
-        
-        return jsonify({"success": True, "message": "Job iniciado! Verifique a galeria em instantes."})
     except Exception as e:
         logger.error(f"[ERRO] {e}")
         return jsonify({"success": False, "message": str(e)})
