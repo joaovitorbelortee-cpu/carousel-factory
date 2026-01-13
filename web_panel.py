@@ -1,558 +1,386 @@
 """
-Viral Bot - Painel Web (BENTO GRID EDITION + SETTINGS)
-Estilo visual inspirado em Shopify Editions Winter 2026.
+Carousel Factory v6.0 - Firebase Edition
+Fabrica de Carrosseis Virais com IA + Autenticacao Firebase
 """
 
-from flask import Flask, render_template_string, request, jsonify, send_file
+from flask import Flask, render_template_string, request, jsonify, send_from_directory, send_file, redirect, url_for
 import os
-import threading
-import asyncio
+import sys
+import io
+import zipfile
+import firebase_admin
+from firebase_admin import credentials, auth
 from datetime import datetime
 from dotenv import load_dotenv
 
-# Imports do projeto
-import sys
-sys.path.insert(0, os.path.dirname(__file__))
-
-# Carregar .env
+# Carregar variaveis de ambiente
 load_dotenv()
 
+# Configurar Imports
+sys.path.insert(0, os.path.dirname(__file__))
+from gemini_integration import generate_carousel_content, get_temas_para_nicho, TEMAS_POR_NICHO
+from carousel_generator import generate_carousel
+from logger import get_logger
+
+logger = get_logger()
 app = Flask(__name__)
 
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output", "carousel")
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+# --- CONFIGURACAO FIREBASE ADMIN ---
+# Para rodar local ou deploy, precisa das credenciais.
+# Se nao tiver credenciais, o app roda mas a auth de backend falha (modo inseguro opcional para testes)
+try:
+    cred = credentials.Certificate("firebase-adminsdk.json") if os.path.exists("firebase-adminsdk.json") else None
+    if cred:
+        firebase_admin.initialize_app(cred)
+    else:
+        # Tenta inicializar sem credenciais explicitas (para Google Cloud/Render)
+        firebase_admin.initialize_app()
+    FIREBASE_ENABLED = True
+except Exception as e:
+    logger.warning(f"Firebase Admin nÃ£o inicializado: {e}. O backend nao validara tokens.")
+    FIREBASE_ENABLED = False
 
-# HTML SUPER MODERNO (BENTO GRID STYLE)
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
+CAROUSEL_DIR = os.path.join(OUTPUT_DIR, "carousels")
+os.makedirs(CAROUSEL_DIR, exist_ok=True)
+
+# --- HTML TEMPLATE COM FIREBASE AUTH ---
 HTML_TEMPLATE = '''
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAROUSEL KING // EDITIONS</title>
+    <title>Carousel Factory v6 | Business Level</title>
+    <!-- Firebase JS SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- UI Config -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap');
-        
-        :root {
-            --bg-color: #050505;
-            --card-bg: #111111;
-            --border-color: #222222;
-            --accent: #D4AF37; /* Ouro */
-            --accent-glow: rgba(212, 175, 55, 0.3);
-            --text-main: #FFFFFF;
-            --text-dim: #888888;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3, .display-font {
-            font-family: 'Space Grotesk', sans-serif;
-            letter-spacing: -0.04em;
-        }
-
-        /* BENTO GRID SYSTEM */
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 16px;
-            padding: 20px;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .bento-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 24px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .bento-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
-            transform: translateY(-2px);
-            z-index: 10;
-        }
-
-        /* GRID POSITIONS */
-        .col-span-12 { grid-column: span 12; }
-        .col-span-8 { grid-column: span 8; }
-        .col-span-6 { grid-column: span 6; }
-        .col-span-4 { grid-column: span 4; }
-        .col-span-3 { grid-column: span 3; }
-        
-        .row-span-2 { grid-row: span 2; }
-
-        /* ELEMENTS */
-        .glass-input {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border-color);
-            color: white;
-            padding: 16px;
-            border-radius: 12px;
-            width: 100%;
-            font-size: 1.1rem;
-            transition: 0.3s;
-        }
-        .glass-input:focus {
-            border-color: var(--accent);
-            outline: none;
-            background: rgba(255,255,255,0.05);
-        }
-
-        .btn-action {
-            background: var(--text-main);
-            color: var(--bg-color);
-            font-weight: 800;
-            padding: 16px 32px;
-            border-radius: 100px;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-        .btn-action:hover {
-            background: var(--accent);
-            transform: scale(1.05);
-        }
-        .btn-action:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* ANIMATED BACKGROUND */
-        .noise-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* SCROLLING TEXT */
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-            position: absolute;
-            opacity: 0.1;
-            font-size: 8rem;
-            font-weight: 800;
-            font-family: 'Space Grotesk';
-            pointer-events: none;
-            user-select: none;
-        }
-        
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-        }
-        
-        .gallery-img {
-            width: 100%;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            transition: 0.3s;
-            aspect-ratio: 4/5;
-            object-fit: cover;
-        }
-        .gallery-img:hover {
-            transform: scale(1.05);
-            border-color: var(--accent);
-            z-index: 5;
-        }
-        
-        /* STATUS BAR */
-        .progress-bar {
-            height: 4px;
-            background: var(--accent);
-            width: 0%;
-            transition: width 0.5s ease;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }
-
-        /* MOBILE RESPONSIVE */
-        @media (max-width: 1024px) {
-            .bento-grid { grid-template-columns: 1fr; }
-            .col-span-12, .col-span-8, .col-span-6, .col-span-4, .col-span-3 { grid-column: span 1; }
-        }
+        :root { --accent: #F59E0B; --bg: #050505; --card: #111; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .bento-card { background: var(--card); border-radius: 20px; border: 1px solid #222; transition: 0.3s; }
+        .bento-card:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(245,158,11,0.1); }
+        .auth-container { max-width: 400px; margin: 100px auto; text-align: center; }
+        .hidden { display: none !important; }
     </style>
 </head>
-<body>
-    <div class="noise-bg"></div>
+<body class="min-h-screen flex flex-col">
 
-    <!-- HERO SECTION -->
-    <div class="bento-grid">
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="auth-container">
+        <h1 class="text-4xl font-bold mb-2 font-display">CAROUSEL<span class="text-yellow-500">FACTORY</span></h1>
+        <p class="text-gray-500 mb-8">Unauthorized Access Prohibited</p>
         
-        <!-- HEADER -->
-        <div class="bento-card col-span-12 flex justify-between items-center" style="border: none; background: transparent;">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black font-bold text-xl">CK</div>
-                <div>
-                    <h1 class="text-2xl font-bold">CAROUSEL KING</h1>
-                    <p class="text-gray-500 text-sm tracking-widest">EDITIONS 2026 // v7.1</p>
-                </div>
-            </div>
-            <div class="flex gap-4">
-                <div class="px-4 py-2 rounded-full border border-gray-800 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors cursor-pointer" onclick="document.getElementById('settingsModal').showModal()">SETTINGS</div>
-            </div>
+        <div class="bento-card p-8">
+            <input type="email" id="email" placeholder="Email" class="w-full glass p-3 rounded mb-3 text-white">
+            <input type="password" id="password" placeholder="Senha" class="w-full glass p-3 rounded mb-4 text-white">
+            <button onclick="login()" class="w-full bg-yellow-500 text-black font-bold p-3 rounded hover:bg-yellow-400 transition">
+                ENTRAR NO SISTEMA
+            </button>
+            <p id="login-error" class="text-red-500 mt-4 text-sm"></p>
         </div>
+        
+        <div class="mt-8 text-xs text-gray-600">
+            <p>Configuracao necessaria no firebaseConfig</p>
+        </div>
+    </div>
 
-        <!-- SETTINGS MODAL -->
-        <dialog id="settingsModal" class="bg-transparent backdrop:bg-black/80 p-0 rounded-2xl">
-            <div class="bento-card w-[500px] max-w-full">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold">CONFIGURAÇÕES</h2>
-                    <button onclick="document.getElementById('settingsModal').close()" class="text-gray-500 hover:text-white">✕</button>
+    <!-- MAIN APP (Protected) -->
+    <div id="app-screen" class="hidden container mx-auto p-6">
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-2xl font-bold font-display">CAROUSEL<span class="text-yellow-500">FACTORY</span></h1>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span class="text-xs text-gray-400 uppercase tracking-widest">System Online</span>
                 </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="user-email" class="text-sm text-gray-400"></span>
+                <button onclick="logout()" class="text-xs border border-red-900 text-red-500 px-3 py-1 rounded hover:bg-red-900/20">SAIR</button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            
+            <!-- CREATE PANEL -->
+            <div class="md:col-span-4 bento-card p-6 h-fit">
+                <h2 class="text-xl font-bold mb-6 font-display flex items-center gap-2">
+                    <span class="text-yellow-500">⚡</span> GERADOR I.A.
+                </h2>
                 
                 <div class="space-y-4">
                     <div>
-                        <label class="text-xs uppercase tracking-widest text-gray-500 mb-2 block">Google Gemini API Key</label>
-                        <div class="relative">
-                            <input type="password" id="apiKeyInput" class="glass-input pr-10" placeholder="Cole sua chave AI Studio aqui...">
-                            <button onclick="togglePass()" class="absolute right-3 top-4 text-gray-500 hover:text-white">
-                                <i data-lucide="eye" width="16"></i>
-                            </button>
-                        </div>
-                        <p class="text-xs text-gray-600 mt-2">Necessário para gerar os roteiros. <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-white underline">Obter chave grátis</a></p>
+                        <label class="text-xs uppercase text-gray-500 block mb-2">Nicho de Atuacao</label>
+                        <select id="nicho" class="w-full glass p-3 rounded text-white bg-transparent">
+                            {% for nicho in nichos %}
+                            <option value="{{ nicho }}" class="bg-black">{{ nicho|title }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     
-                    <div class="flex gap-4 mt-6">
-                        <button onclick="saveSettings()" class="btn-action w-full justify-center">
-                            <i data-lucide="save"></i> Salvar e Conectar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </dialog>
-
-        <!-- GENERATOR CARD (MAIN) -->
-        <div class="bento-card col-span-8 row-span-2 flex flex-col justify-center relative">
-            <div class="marquee-container" style="top: -20px; left: 0;">CREATE CREATE CREATE</div>
-            
-            <div class="relative z-10 max-w-2xl">
-                <h2 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                    CRIE O <span style="color: var(--accent);">VIRAL</span><br>
-                    DO FUTURO.
-                </h2>
-                
-                <div class="space-y-6">
                     <div>
-                        <label class="text-xs uppercase tracking-widest text-gray-500 mb-2 block">Tópico do Conteúdo</label>
-                        <input type="text" id="topicInput" class="glass-input" placeholder="Ex: A verdade sobre estoicismo...">
+                        <label class="text-xs uppercase text-gray-500 block mb-2">Tema (Opcional)</label>
+                        <input type="text" id="topic" placeholder="Deixe vazio para auto-gerar..." class="w-full glass p-3 rounded text-white">
                     </div>
                     
-                    <div class="flex gap-4">
-                        <button class="btn-action" onclick="generate()" id="btnGen">
-                            <i data-lucide="zap"></i>
-                            Gerar Carrossel
-                        </button>
+                    <button onclick="generate()" id="btn-gen" class="w-full bg-gradient-to-r from-yellow-600 to-yellow-500 text-black font-bold p-4 rounded-xl hover:scale-[1.02] transition-transform">
+                        GERAR CARROSSEL VIRAL
+                    </button>
+                </div>
+                
+                <div id="status-box" class="hidden mt-6 p-4 rounded bg-white/5 border border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-yellow-500"></div>
+                        <span id="status-msg" class="text-sm text-gray-300">Processando...</span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- STATS CARD -->
-        <div class="bento-card col-span-4 flex flex-col justify-between">
-            <h3 class="text-gray-500 text-sm uppercase">Engine Status</h3>
-            <div class="text-4xl font-bold text-green-500 mt-2">ONLINE</div>
-            <div class="mt-8 space-y-2">
-                <div class="flex justify-between text-sm border-b border-gray-800 pb-2">
-                    <span class="text-gray-500">Gemini Auth</span>
-                    <span id="authStatus" class="text-red-500">Verificando...</span>
+            <!-- GALLERY -->
+            <div class="md:col-span-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold font-display">GALERIA RECENTE</h2>
+                    <button onclick="loadGallery()" class="text-yellow-500 text-sm hover:underline">Atualizar</button>
                 </div>
-                <div class="flex justify-between text-sm border-b border-gray-800 pb-2">
-                    <span class="text-gray-500">Mode</span>
-                    <span>Modo Caverna v4</span>
-                </div>
-                <div class="flex justify-between text-sm border-b border-gray-800 pb-2">
-                    <span class="text-gray-500">Visual</span>
-                    <span>Brutalist / Glitch</span>
+                
+                <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Cards inseridos via JS -->
                 </div>
             </div>
         </div>
-
-        <!-- RECENT ACTIVITY / LOGS -->
-        <div class="bento-card col-span-4 flex flex-col h-64">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-gray-500 text-sm uppercase">Live Logs</h3>
-                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            </div>
-            <div id="statusText" class="font-mono text-sm text-gray-400 overflow-y-auto flex-1">
-                [SYSTEM] Ready to generate.<br>
-                [SYSTEM] Waiting for user input...
-            </div>
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-
-        <!-- GALLERY PREVIEW -->
-        <div class="bento-card col-span-12">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">GALERIA RECENTE</h2>
-                <button onclick="refreshGallery()" class="text-sm text-gray-500 hover:text-white transition">Refresh</button>
-            </div>
-            
-            <div class="gallery-grid" id="galleryGrid">
-                <!-- IMAGES WILL BE INJECTED HERE -->
-                <div class="text-gray-600 text-center py-10 col-span-full">
-                    Nenhum carrossel gerado nesta sessão.
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        // Init Icons
-        lucide.createIcons();
+        // CONFIGURACAO FIREBASE - PREENCHA COM SEUS DADOS
+        const firebaseConfig = {
+            apiKey: "{{ firebase_config.apiKey }}",
+            authDomain: "{{ firebase_config.projectId }}.firebaseapp.com",
+            projectId: "{{ firebase_config.projectId }}",
+            storageBucket: "{{ firebase_config.projectId }}.appspot.com",
+            messagingSenderId: "SENDER_ID",
+            appId: "APP_ID"
+        };
 
-        // Animations (GSAP)
-        gsap.from(".bento-card", {
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: "power3.out"
+        // Initialize Firebase
+        if (firebaseConfig.apiKey) {
+            firebase.initializeApp(firebaseConfig);
+        } else {
+            console.error("Firebase Config ausente");
+        }
+
+        // Auth State Listener
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-screen').classList.remove('hidden');
+                document.getElementById('user-email').innerText = user.email;
+                loadGallery();
+            } else {
+                document.getElementById('login-screen').classList.remove('hidden');
+                document.getElementById('app-screen').classList.add('hidden');
+            }
         });
 
-        function togglePass() {
-            const inp = document.getElementById('apiKeyInput');
-            inp.type = inp.type === 'password' ? 'text' : 'password';
+        async function login() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            try {
+                await firebase.auth().signInWithEmailAndPassword(email, pass);
+            } catch (error) {
+                document.getElementById('login-error').innerText = error.message;
+            }
         }
 
-        async function saveSettings() {
-            const key = document.getElementById('apiKeyInput').value;
-            if(!key) return alert("Digite a chave!");
-            
-            try {
-                const res = await fetch('/save_settings', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ key })
-                });
-                const data = await res.json();
-                if(data.success) {
-                    alert("Conectado com sucesso!");
-                    document.getElementById('settingsModal').close();
-                    checkAuth();
-                } else {
-                    alert("Erro ao salvar.");
-                }
-            } catch(e) { console.error(e); }
-        }
-
-        async function checkAuth() {
-            try {
-                const res = await fetch('/check_auth');
-                const data = await res.json();
-                const el = document.getElementById('authStatus');
-                if(data.connected) {
-                    el.innerText = "CONECTADO";
-                    el.className = "text-green-500";
-                } else {
-                    el.innerText = "DESCONECTADO";
-                    el.className = "text-red-500";
-                }
-            } catch(e) {}
+        function logout() {
+            firebase.auth().signOut();
         }
 
         async function generate() {
-            const topic = document.getElementById('topicInput').value;
-            if (!topic) {
-                alert("Digite um tópico!");
-                return;
-            }
+            const user = firebase.auth().currentUser;
+            if (!user) return;
 
-            const btn = document.getElementById('btnGen');
-            const statusDiv = document.getElementById('statusText');
-            const bar = document.getElementById('progressBar');
+            const nicho = document.getElementById('nicho').value;
+            const topic = document.getElementById('topic').value;
             
+            const btn = document.getElementById('btn-gen');
+            const statusBox = document.getElementById('status-box');
             btn.disabled = true;
-            btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin"></i> Processando...`;
-            lucide.createIcons();
+            statusBox.classList.remove('hidden');
             
-            statusDiv.innerHTML += `<br>[USER] Gerando sobre: "${topic}"...`;
-            statusDiv.scrollTop = statusDiv.scrollHeight;
-            bar.style.width = "20%";
-
             try {
-                const response = await fetch('/generate_carousel', {
+                const token = await user.getIdToken();
+                
+                const res = await fetch('/generate_carousel', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ topic })
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ nicho, topic, count: 5 })
                 });
                 
-                const data = await response.json();
-                
+                const data = await res.json();
                 if (data.success) {
-                    statusDiv.innerHTML += `<br>[SUCCESS] ${data.message}`;
-                    bar.style.width = "100%";
-                    setTimeout(refreshGallery, 1000);
+                    document.getElementById('status-msg').innerText = "Sucesso! Atualizando galeria...";
+                    setTimeout(loadGallery, 1500);
                 } else {
-                    statusDiv.innerHTML += `<br>[ERROR] ${data.message}`;
-                    bar.style.background = "red";
+                    document.getElementById('status-msg').innerText = "Erro: " + data.message;
+                    document.getElementById('status-msg').classList.add('text-red-500');
                 }
-            } catch (err) {
-                statusDiv.innerHTML += `<br>[FATAL] ${err.message}`;
+            } catch (e) {
+                console.error(e);
+            } finally {
+                btn.disabled = false;
             }
+        }
+
+        async function loadGallery() {
+            const user = firebase.auth().currentUser;
+            if (!user) return;
             
-            statusDiv.scrollTop = statusDiv.scrollHeight;
-            btn.disabled = false;
-            btn.innerHTML = `<i data-lucide="zap"></i> Gerar Carrossel`;
-            lucide.createIcons();
-        }
-        
-        async function refreshGallery() {
-            try {
-                const response = await fetch('/list_images');
-                const data = await response.json();
-                const grid = document.getElementById('galleryGrid');
-                
-                if (data.images && data.images.length > 0) {
-                    grid.innerHTML = data.images.map(img => `
-                        <div class="relative group">
-                            <img src="/image/${img}" class="gallery-img">
-                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
-                                <a href="/image/${img}" download class="p-2 bg-white rounded-full text-black hover:scale-110 transition"><i data-lucide="download" width="16"></i></a>
-                                <a href="/image/${img}" target="_blank" class="p-2 bg-white rounded-full text-black hover:scale-110 transition"><i data-lucide="eye" width="16"></i></a>
-                            </div>
+            const token = await user.getIdToken();
+            const res = await fetch('/list_carousels', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await res.json();
+            
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+            
+            data.carousels.forEach(c => {
+                const cover = `/carousel/${c.folder}/${c.files[0]}`;
+                const div = document.createElement('div');
+                div.className = 'bento-card overflow-hidden group relative';
+                div.innerHTML = `
+                    <div class="h-48 overflow-hidden">
+                        <img src="${cover}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-sm text-gray-300 truncate">${c.folder}</h3>
+                        <div class="flex justify-between items-center mt-3">
+                            <span class="text-xs text-gray-500">${c.files.length} slides</span>
+                            <a href="/download_carousel/${c.folder}" class="text-xs bg-white text-black px-3 py-1 rounded font-bold hover:bg-yellow-500 transition">BAIXAR ZIP</a>
                         </div>
-                    `).join('');
-                    lucide.createIcons();
-                }
-            } catch (e) { console.error(e); }
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
         }
-        
-        // Initial load
-        refreshGallery();
-        checkAuth();
     </script>
 </body>
 </html>
 '''
 
-# --- ROTAS FLASK ---
+# --- MIDDLEWARE AUTH ---
+def verify_firebase_token():
+    if not FIREBASE_ENABLED:
+        return True # Ignora auth se firebase nao estiver configurado (DEV ONLY)
+        
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return False
+    
+    token = auth_header.split(' ')[1]
+    try:
+        decoded_token = auth.verify_id_token(token)
+        request.user = decoded_token
+        return True
+    except Exception as e:
+        logger.error(f"Erro Token: {e}")
+        return False
+
+# --- ROUTES ---
 
 @app.route('/')
 def index():
-    return render_template_string(HTML_TEMPLATE)
-
-@app.route('/save_settings', methods=['POST'])
-def save_settings():
-    data = request.json
-    key = data.get('key')
-    
-    # Ler .env atual
-    env_path = os.path.join(os.path.dirname(__file__), '.env')
-    lines = []
-    if os.path.exists(env_path):
-        with open(env_path, 'r') as f:
-            lines = f.readlines()
-    
-    # Atualizar ou adicionar chave
-    key_found = False
-    new_lines = []
-    for line in lines:
-        if line.startswith('GEMINI_API_KEY='):
-            new_lines.append(f'GEMINI_API_KEY={key}\n')
-            key_found = True
-        else:
-            new_lines.append(line)
-            
-    if not key_found:
-        new_lines.append(f'\nGEMINI_API_KEY={key}\n')
-        
-    with open(env_path, 'w') as f:
-        f.writelines(new_lines)
-        
-    # Atualizar variavel de ambiente em tempo real
-    os.environ['GEMINI_API_KEY'] = key
-    
-    return jsonify({"success": True})
-
-@app.route('/check_auth')
-def check_auth():
-    # Verificar se temos chave válida carregada
-    key = os.environ.get('GEMINI_API_KEY')
-    has_key = key and "Cole_Sua" not in key and len(key) > 10
-    return jsonify({"connected": has_key})
+    # Passar config do backend para o frontend
+    fb_config = {
+        "apiKey": os.getenv("FIREBASE_API_KEY", ""),
+        "projectId": os.getenv("FIREBASE_PROJECT_ID", "")
+    }
+    return render_template_string(HTML_TEMPLATE, nichos=list(TEMAS_POR_NICHO.keys()), firebase_config=fb_config)
 
 @app.route('/generate_carousel', methods=['POST'])
-def generate_carousel_endpoint():
-    data = request.json
-    topic = data.get('topic')
-    
-    # Executar em thread separada para não travar
-    def run_job():
-        # Importar aqui para evitar circular imports
-        from main_carousel import generate_carousel_script, generate_carousel_images
+def handle_generate():
+    if not verify_firebase_token() and FIREBASE_ENABLED:
+        return jsonify({"success": False, "message": "Unauthorized"}), 401
         
-        try:
-            # 1. Gerar Roteiro
-            script_data = generate_carousel_script(topic)
-            
-            # 2. Gerar Imagens
-            folder_name = datetime.now().strftime("%Y%m%d_%H%M%S")
-            output_path = os.path.join(OUTPUT_DIR, folder_name)
-            generate_carousel_images(script_data, output_dir=output_path)
-            
-        except Exception as e:
-            print(f"Erro no background: {e}")
-
-    thread = threading.Thread(target=run_job)
-    thread.start()
+    data = request.json
+    topic = data.get('topic', '')
+    nicho = data.get('nicho', 'mentalidade')
+    count = int(data.get('count', 5))
     
-    return jsonify({"success": True, "message": "Job iniciado! Verifique a galeria em instantes."})
+    try:
+        # Se nao tiver tema, pega um automatico do nicho
+        if not topic:
+            temas = get_temas_para_nicho(nicho, 1)
+            topic = temas[0] if temas else "Disciplina e Foco"
+        
+        logger.info(f"[GERAR] Nicho={nicho}, Tema={topic}")
+        
+        # Gera o conteudo (copys)
+        slides = generate_carousel_content(topic, nicho, count)
+        
+        if not slides:
+            return jsonify({"success": False, "message": "Falha ao gerar conteudo."})
+        
+        # Nome do carrossel
+        name = f"{nicho}_{topic[:15]}_{datetime.now().strftime('%H%M')}".replace(' ', '_')
+        
+        # Gera as imagens
+        paths = generate_carousel(slides, "caverna", name)
+        
+        return jsonify({"success": True, "folder": name, "slides": len(paths)})
+    except Exception as e:
+        logger.error(f"[ERRO] {e}")
+        return jsonify({"success": False, "message": str(e)})
 
-@app.route('/list_images')
-def list_images():
-    # Listar todas as imagens jpg recursivamente em output/carousel
-    images = []
-    if os.path.exists(OUTPUT_DIR):
-        for root, dirs, files in os.walk(OUTPUT_DIR):
-            for file in files:
-                if file.endswith('.jpg'):
-                    # Caminho relativo para servir
-                    rel_dir = os.path.relpath(root, OUTPUT_DIR)
-                    if rel_dir == ".": rel_dir = ""
-                    images.append(os.path.join(rel_dir, file).replace("\", "/"))
+@app.route('/list_carousels')
+def list_carousels():
+    if not verify_firebase_token() and FIREBASE_ENABLED:
+       # Se falhar auth, retornamos vazio ou erro. 
+       # Para facilitar testes locais sem token, se FIREBASE_ENABLED for False, passamos.
+       if FIREBASE_ENABLED:
+           return jsonify({"carousels": []}), 401
+
+    carousels = []
+    if os.path.exists(CAROUSEL_DIR):
+        for folder in sorted(os.listdir(CAROUSEL_DIR), reverse=True):
+            folder_path = os.path.join(CAROUSEL_DIR, folder)
+            if os.path.isdir(folder_path):
+                files = sorted([f for f in os.listdir(folder_path) if f.endswith('.png')])
+                if files:
+                    carousels.append({"folder": folder, "files": files})
+    return jsonify({"carousels": carousels})
+
+@app.route('/carousel/<folder>/<filename>')
+def serve_image(folder, filename):
+    return send_from_directory(os.path.join(CAROUSEL_DIR, folder), filename)
+
+@app.route('/download_carousel/<folder>')
+def download_carousel(folder):
+    folder_path = os.path.join(CAROUSEL_DIR, folder)
+    if not os.path.exists(folder_path):
+        return "Not Found", 404
     
-    # Ordenar por mais recente (mtime) seria ideal, mas vamos inverter a lista simples
-    return jsonify({"images": images[::-1]})
-
-@app.route('/image/<path:filename>')
-def serve_image(filename):
-    return send_file(os.path.join(OUTPUT_DIR, filename))
+    memory_file = io.BytesIO()
+    with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for file in sorted(os.listdir(folder_path)):
+            if file.endswith('.png'):
+                file_path = os.path.join(folder_path, file)
+                zf.write(file_path, file)
+    
+    memory_file.seek(0)
+    return send_file(memory_file, mimetype='application/zip', as_attachment=True, download_name=f'{folder}.zip')
 
 if __name__ == '__main__':
-    print("\n" + "="*60)
-    print("CAROUSEL KING - BENTO EDITION")
     print("="*60)
-    print(f"\n[+] Acesse: http://localhost:5000")
-    
-    import webbrowser
-    try:
-        webbrowser.open("http://localhost:5000")
-    except:
-        pass
-    
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    print(" CAROUSEL FACTORY v6.0 - FIREBASE EDITION")
+    print("="*60)
+    app.run(host='0.0.0.0', port=5000)

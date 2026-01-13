@@ -1,69 +1,53 @@
-# Carousel Factory v5.0
+# Carousel Factory v6.0 - Business Edition
 
-Fabrica de Carrosseis Virais com IA - Gere carrosseis profissionais para Instagram/TikTok automaticamente.
+Fabrica de Carrosseis Virais com IA + Autenticacao Firebase.
 
 ## Features
 
-- **5 Formatos Mestres** baseados no modelocarrosel.md (Dark Stoic Bible)
-- **Geracao Automatica de Copy** - apenas escolha o nicho
-- **Temas Pre-Cadastrados** por nicho (Fitness, Financas, Produtividade, etc)
-- **Galeria com Preview** de todos os slides
-- **Download em ZIP** com um clique
+- **Auth Via Firebase:** Login seguro com email/senha.
+- **IA Gemini Pro:** Geracao de roteiros baseados no "Black Stoic Bible".
+- **Visual Premium:** Interface estilo Bento Grid com Modo Caverna.
+- **Download ZIP:** Baixe todos os slides prontos.
 
-## Nichos Disponiveis
+## Instalação
 
-- 💪 Fitness
-- ⚡ Produtividade  
-- 💰 Financas
-- ❤️ Relacionamentos
-- 🚀 Empreendedorismo
-- 🧠 Mentalidade
+1. Clone o repositorio:
+   ```bash
+   git clone https://github.com/jonabergamo/carousel-factory.git
+   cd carousel-factory
+   ```
 
-## Instalacao
+2. Instale dependencias:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-git clone https://github.com/SEU_USUARIO/carousel-factory.git
-cd carousel-factory
-pip install -r requirements.txt
-python web_panel.py
-```
+3. Configure o `.env`:
+   - Copie `.env.example` para `.env`
+   - Cole sua `GEMINI_API_KEY`
+   - (Opcional) Cole `FIREBASE_API_KEY` e `FIREBASE_PROJECT_ID` para ativar login.
 
-## Como Usar
+4. Configuração Firebase (Para Auth):
+   - Crie um projeto no console.firebase.google.com
+   - Ative "Authentication" > "Email/Password"
+   - Crie um usuário no console.
+   - Em "Project Settings", pegue o `Project ID` e `Web API Key`.
+   - Coloque no `.env`.
+   - (Para Backend Seguro) Gere uma nova chave privada em "Service Accounts", baixe o JSON, renomeie para `firebase-adminsdk.json` e coloque na raiz do projeto.
 
-1. Acesse `http://localhost:5000`
-2. Selecione um nicho
-3. (Opcional) Digite um tema personalizado
-4. Clique em "Gerar Carrossel com IA"
-5. Baixe os slides na Galeria
+5. Rodar:
+   ```bash
+   python web_panel.py
+   ```
+   Acesse: `http://localhost:5000`
 
 ## Tecnologias
 
-- Python 3.10+
 - Flask
-- Pillow (PIL)
-- Google Gemini API (opcional)
-
-## Formatos de Carrossel
-
-1. **O Dicionario** - Redefinicao de palavras
-2. **O Diagnostico** - Checklists/Sinais
-3. **O Conflito** - Comparacoes (VS)
-4. **O Lembrete** - Frases de impacto
-5. **O Algoritmo** - Passos/Fases
-
-## Estrutura
-
-```
-carousel-factory/
-├── web_panel.py          # Servidor Flask
-├── gemini_integration.py # Geracao de copy
-├── carousel_generator.py # Geracao de imagens
-├── modelocarrosel.md     # Templates de referencia
-├── logger.py             # Sistema de logs
-├── requirements.txt      # Dependencias
-└── output/carousels/     # Carrosseis gerados
-```
+- Firebase Auth (Frontend + Admin SDK)
+- Google Gemini API
+- Pillow (Processamento de Imagem)
 
 ## License
 
-MIT License
+MIT
