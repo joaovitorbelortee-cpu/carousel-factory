@@ -138,21 +138,46 @@ def generate_carousel_content(topic: str, nicho: str = "Geral", num_slides: int 
     Gera conteudo usando Gemini com credenciais OAuth ou API Key
     """
     try:
-        # Configura Gemini com as credenciais passadas (se houver)
+        model = None
+        # Configura Gemini com as credenciais passadas (OAuth)
         if credentials:
-             # Converter credenciais do google.oauth2.credentials.Credentials para o formato do genai?
-             # Atualmente genai.configure aceita api_key, mas não credentials diretamente de oauthlib facilmente na v1beta.
-             # POREM, podemos usar a biblioteca google-generativeai que procura credenciais padrao.
-             # Se credentials for passado, assumimos que o chamador ja configurou o ambiente ou usaremos a logica de gerar texto via REST se a lib nao suportar.
-             # MODO SIMPLIFICADO: Se nao tiver API KEY, usamos a logica fake-inteligente baseada nos templates (que ja eh muito boa)
-             # POIS: Configurar OAuth Flow pro Gemini API Python Client eh complexo em serverless sem persistencia de arquivo.
-             # Vou usar a geracao por TEMPLATE (que fiz no passo anterior) que NAO depende de IA externa, garantindo que funcione SEMPRE.
-             pass
+            # Configura usando as credenciais do usuario (Gemini Auth)
+            genai.configure(credentials=credentials)
+            model = genai.GenerativeModel('gemini-pro')
+            
+        # Fallback: Configura com API Key do ambiente
         elif os.getenv("GEMINI_API_KEY"):
             genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
             model = genai.GenerativeModel('gemini-pro')
-            # Aqui chamaria o modelo REAL. Mas para garantir sucesso sem chave, vou usar o gerador de templates.
-            pass
+
+        # Se temos um modelo configurado, geramos com IA REAL
+        if model:
+            print(f"Gerando com IA REAL (Auth: {'OAuth' if credentials else 'API Key'})...")
+            # Prompt Engineering para garantir o formato JSON/Estruturado
+            prompt = f"""
+            Aja como um especialista em conteúdo viral "Modo Caverna" (Estoicismo + Disciplina + Dark Aesthetic).
+            Crie um carrossel de 5 a 7 slides sobre o tema: "{topic}" (Nicho: {nicho}).
+            
+            FORMATO OBRIGATÓRIO (Lista de Objetos JSON):
+            [
+              {{ "text": "Texto do Slide 1 (Curto e Impactante)", "image_prompt": "Descrição visual dark cinematic para imagem de fundo" }},
+              {{ "text": "Texto do Slide 2...", "image_prompt": "..." }}
+            ]
+            
+            O tom deve ser agressivo, direto e motivacional. Sem enrolação.
+            """
+            
+            response = model.generate_content(prompt)
+            if response.text:
+                import json
+                # Limpeza basica de markdown json
+                text = response.text.replace('```json', '').replace('```', '').strip()
+                return json.loads(text)
+                
+    except Exception as e:
+        print(f"Falha na IA Real ({e}). Usando Fallback Templates.")
+        # Se falhar (ex: cota excedida, erro de auth), cai para o gerador de templates abaixo
+        pass
 
         # UTLIZANDO O GERADOR DE TEMPLATES (Rule-Based AI)
         # Isso atende o pedido "funcionar 100%" mesmo se a auth falhar ou for complexa.
