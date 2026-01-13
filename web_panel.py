@@ -323,20 +323,43 @@ def handle_generate():
             topic = temas[0] if temas else "Disciplina e Foco"
         
         logger.info(f"[GERAR] Nicho={nicho}, Tema={topic}")
+        # Detectar ambiente Vercel (Serverless) - Nao usar threads
+        is_vercel = os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME')
         
-        # Gera o conteudo (copys)
-        slides = generate_carousel_content(topic, nicho, count)
+        if is_vercel:
+            # Modo Sincrono (Serverless)
+            try:
+                # 1. Gerar Roteiro
+                slides = generate_carousel_content(topic, nicho, count)
+                if not slides:
+                    return jsonify({"success": False, "message": "Falha ao gerar conteudo."})
+
+                # 2. Gerar Imagens
+                name = f"{nicho}_{topic[:15]}_{datetime.now().strftime('%H%M')}".replace(' ', '_')
+                paths = generate_carousel(slides, "caverna", name)
+                
+                return jsonify({"success": True, "folder": name, "slides": len(paths)})
+            except Exception as e:
+                logger.error(f"[ERRO] {e}")
+                return jsonify({"success": False, "message": str(e)})
+
+        # Modo Assincrono (Local/VPS)
+        def run_job():
+            # Importar aqui para evitar circular imports
+            try:
+                # 1. Gerar Roteiro
+                slides = generate_carousel_content(topic, nicho, count)
+                if slides:
+                    name = f"{nicho}_{topic[:15]}_{datetime.now().strftime('%H%M')}".replace(' ', '_')
+                    generate_carousel(slides, "caverna", name)
+                
+            except Exception as e:
+                print(f"Erro no background: {e}")
+
+        thread = threading.Thread(target=run_job)
+        thread.start()
         
-        if not slides:
-            return jsonify({"success": False, "message": "Falha ao gerar conteudo."})
-        
-        # Nome do carrossel
-        name = f"{nicho}_{topic[:15]}_{datetime.now().strftime('%H%M')}".replace(' ', '_')
-        
-        # Gera as imagens
-        paths = generate_carousel(slides, "caverna", name)
-        
-        return jsonify({"success": True, "folder": name, "slides": len(paths)})
+        return jsonify({"success": True, "message": "Job iniciado! Verifique a galeria em instantes."})
     except Exception as e:
         logger.error(f"[ERRO] {e}")
         return jsonify({"success": False, "message": str(e)})
