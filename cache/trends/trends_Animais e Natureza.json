@@ -1,0 +1,112 @@
+{
+  "niche": "Animais e Natureza",
+  "searched_at": "2026-01-13T16:43:39.493429",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "AnimaiseNatureza"
+  ],
+  "avg_duration": 31,
+  "avg_engagement": 10.11,
+  "popular_hooks": [
+    "O ChatGPT é bom, mas essas IAs são melhores",
+    "Para de usar só Animais e Natureza e olha essas!",
+    "Se você não conhece isso, está atrasado",
+    "Se você não conhece isso, está atrasado",
+    "Você está perdendo tempo se não usa isso"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#Foryou #AnimaiseNatureza #Trending #Viral",
+      "views": 4602610,
+      "likes": 167607,
+      "comments": 37130,
+      "shares": 95981,
+      "hashtags": [
+        "Viral",
+        "Trending",
+        "AnimaiseNatureza",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 8.98
+    },
+    {
+      "title": "Para de usar só Animais e Natureza e olha essas!",
+      "description": "#Foryou #AnimaiseNatureza #Viral #Trending",
+      "views": 3977844,
+      "likes": 217915,
+      "comments": 12306,
+      "shares": 12779,
+      "hashtags": [
+        "Viral",
+        "AnimaiseNatureza",
+        "Foryou",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 10.19
+    },
+    {
+      "title": "Se você não conhece isso, está atrasado",
+      "description": "#AnimaiseNatureza #Trending #Foryou #Viral",
+      "views": 3689356,
+      "likes": 60380,
+      "comments": 36429,
+      "shares": 52974,
+      "hashtags": [
+        "Trending",
+        "Foryou",
+        "AnimaiseNatureza",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 8.15
+    },
+    {
+      "title": "Se você não conhece isso, está atrasado",
+      "description": "#Foryou #Trending #AnimaiseNatureza #Viral",
+      "views": 3615066,
+      "likes": 115365,
+      "comments": 30112,
+      "shares": 13190,
+      "hashtags": [
+        "AnimaiseNatureza",
+        "Viral",
+        "Trending",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 11.2
+    },
+    {
+      "title": "Você está perdendo tempo se não usa isso",
+      "description": "#AnimaiseNatureza #Foryou #Viral #Trending",
+      "views": 3303086,
+      "likes": 424636,
+      "comments": 3668,
+      "shares": 60196,
+      "hashtags": [
+        "AnimaiseNatureza",
+        "Viral",
+        "Trending",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 10.28
+    }
+  ]
+}

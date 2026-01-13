@@ -1,0 +1,113 @@
+{
+  "niche": "productivity",
+  "searched_at": "2026-01-13T14:18:25.914376",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "ProductivityHacks",
+    "LifeHacks",
+    "Productivity",
+    "StudyTok",
+    "WorkFromHome"
+  ],
+  "avg_duration": 42,
+  "avg_engagement": 15.92,
+  "popular_hooks": [
+    "Essa é a melhor descoberta que fiz esse ano",
+    "Isso vai mudar sua vida em 30 segundos",
+    "Antes eu fazia isso em 5 horas, agora faço em 5 minutos",
+    "Eu não acredito que isso é grátis",
+    "Isso vai mudar sua vida em 30 segundos"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Essa é a melhor descoberta que fiz esse ano",
+      "description": "#TimeManagement #LifeHacks #StudyTok #WorkFromHome",
+      "views": 4769755,
+      "likes": 162154,
+      "comments": 23486,
+      "shares": 27933,
+      "hashtags": [
+        "WorkFromHome",
+        "ProductivityHacks",
+        "StudyTok",
+        "Productivity"
+      ],
+      "music": "Trending Sound",
+      "duration": 15,
+      "engagement_rate": 16.77
+    },
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#ProductivityHacks #WorkFromHome #Productivity #StudyTok",
+      "views": 3934846,
+      "likes": 383915,
+      "comments": 26827,
+      "shares": 16988,
+      "hashtags": [
+        "Productivity",
+        "WorkFromHome",
+        "StudyTok",
+        "ProductivityHacks"
+      ],
+      "music": "Trending Sound",
+      "duration": 60,
+      "engagement_rate": 12.25
+    },
+    {
+      "title": "Antes eu fazia isso em 5 horas, agora faço em 5 minutos",
+      "description": "#ProductivityHacks #StudyTok #LifeHacks #TimeManagement",
+      "views": 3587608,
+      "likes": 212979,
+      "comments": 39185,
+      "shares": 53145,
+      "hashtags": [
+        "ProductivityHacks",
+        "WorkFromHome",
+        "StudyTok",
+        "TimeManagement"
+      ],
+      "music": "Trending Sound",
+      "duration": 45,
+      "engagement_rate": 20.76
+    },
+    {
+      "title": "Eu não acredito que isso é grátis",
+      "description": "#LifeHacks #StudyTok #ProductivityHacks #Productivity",
+      "views": 3308427,
+      "likes": 286221,
+      "comments": 28335,
+      "shares": 94226,
+      "hashtags": [
+        "Productivity",
+        "LifeHacks",
+        "StudyTok",
+        "WorkFromHome"
+      ],
+      "music": "Trending Sound",
+      "duration": 45,
+      "engagement_rate": 12.96
+    },
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#StudyTok #ProductivityHacks #LifeHacks #Productivity",
+      "views": 2073070,
+      "likes": 365625,
+      "comments": 620,
+      "shares": 17882,
+      "hashtags": [
+        "Productivity",
+        "LifeHacks",
+        "TimeManagement",
+        "WorkFromHome"
+      ],
+      "music": "Trending Sound",
+      "duration": 45,
+      "engagement_rate": 20.83
+    }
+  ]
+}

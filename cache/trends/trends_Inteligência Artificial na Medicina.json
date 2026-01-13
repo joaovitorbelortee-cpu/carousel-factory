@@ -1,0 +1,112 @@
+{
+  "niche": "Inteligência Artificial na Medicina",
+  "searched_at": "2026-01-13T15:05:02.768822",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "InteligênciaArtificialnaMedicina"
+  ],
+  "avg_duration": 28,
+  "avg_engagement": 10.14,
+  "popular_hooks": [
+    "Isso vai mudar sua vida em 30 segundos",
+    "Se você não conhece isso, está atrasado",
+    "O ChatGPT é bom, mas essas IAs são melhores",
+    "Se você não conhece isso, está atrasado",
+    "O ChatGPT é bom, mas essas IAs são melhores"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#Viral #InteligênciaArtificialnaMedicina #Trending #Foryou",
+      "views": 4312334,
+      "likes": 102351,
+      "comments": 22111,
+      "shares": 42161,
+      "hashtags": [
+        "InteligênciaArtificialnaMedicina",
+        "Viral",
+        "Trending",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 9.88
+    },
+    {
+      "title": "Se você não conhece isso, está atrasado",
+      "description": "#Viral #Foryou #Trending #InteligênciaArtificialnaMedicina",
+      "views": 4050366,
+      "likes": 130977,
+      "comments": 17451,
+      "shares": 32440,
+      "hashtags": [
+        "InteligênciaArtificialnaMedicina",
+        "Foryou",
+        "Viral",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 8.28
+    },
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#Foryou #InteligênciaArtificialnaMedicina #Viral #Trending",
+      "views": 3180813,
+      "likes": 154481,
+      "comments": 42886,
+      "shares": 24595,
+      "hashtags": [
+        "InteligênciaArtificialnaMedicina",
+        "Viral",
+        "Foryou",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 10.82
+    },
+    {
+      "title": "Se você não conhece isso, está atrasado",
+      "description": "#Trending #Viral #InteligênciaArtificialnaMedicina #Foryou",
+      "views": 2723570,
+      "likes": 387867,
+      "comments": 47354,
+      "shares": 70955,
+      "hashtags": [
+        "InteligênciaArtificialnaMedicina",
+        "Viral",
+        "Trending",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 9.61
+    },
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#Trending #Viral #Foryou #InteligênciaArtificialnaMedicina",
+      "views": 1884593,
+      "likes": 49656,
+      "comments": 2336,
+      "shares": 45473,
+      "hashtags": [
+        "Viral",
+        "InteligênciaArtificialnaMedicina",
+        "Foryou",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 9.75
+    }
+  ]
+}

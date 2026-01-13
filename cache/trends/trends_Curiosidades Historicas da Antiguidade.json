@@ -1,0 +1,112 @@
+{
+  "niche": "Curiosidades Historicas da Antiguidade",
+  "searched_at": "2026-01-13T15:20:00.459738",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "CuriosidadesHistoricasdaAntiguidade"
+  ],
+  "avg_duration": 30,
+  "avg_engagement": 10.03,
+  "popular_hooks": [
+    "Se você não conhece isso, está atrasado",
+    "Antes eu fazia isso em 5 horas, agora faço em 5 minutos",
+    "POV: você descobriu esse pack de IAs",
+    "O ChatGPT é bom, mas essas IAs são melhores",
+    "Se você não conhece isso, está atrasado"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Se você não conhece isso, está atrasado",
+      "description": "#Viral #CuriosidadesHistoricasdaAntiguidade #Trending #Foryou",
+      "views": 4800456,
+      "likes": 233766,
+      "comments": 27144,
+      "shares": 77558,
+      "hashtags": [
+        "Foryou",
+        "Trending",
+        "Viral",
+        "CuriosidadesHistoricasdaAntiguidade"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 11.24
+    },
+    {
+      "title": "Antes eu fazia isso em 5 horas, agora faço em 5 minutos",
+      "description": "#CuriosidadesHistoricasdaAntiguidade #Foryou #Trending #Viral",
+      "views": 3527620,
+      "likes": 301747,
+      "comments": 4569,
+      "shares": 70444,
+      "hashtags": [
+        "Viral",
+        "Trending",
+        "CuriosidadesHistoricasdaAntiguidade",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 10.57
+    },
+    {
+      "title": "POV: você descobriu esse pack de IAs",
+      "description": "#Viral #Trending #CuriosidadesHistoricasdaAntiguidade #Foryou",
+      "views": 2918908,
+      "likes": 292671,
+      "comments": 13163,
+      "shares": 67300,
+      "hashtags": [
+        "Foryou",
+        "CuriosidadesHistoricasdaAntiguidade",
+        "Viral",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 10.25
+    },
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#Trending #Viral #CuriosidadesHistoricasdaAntiguidade #Foryou",
+      "views": 2784538,
+      "likes": 155764,
+      "comments": 986,
+      "shares": 34031,
+      "hashtags": [
+        "CuriosidadesHistoricasdaAntiguidade",
+        "Foryou",
+        "Trending",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 10.22
+    },
+    {
+      "title": "Se você não conhece isso, está atrasado",
+      "description": "#Viral #Foryou #CuriosidadesHistoricasdaAntiguidade #Trending",
+      "views": 2708557,
+      "likes": 289177,
+      "comments": 40929,
+      "shares": 71377,
+      "hashtags": [
+        "Viral",
+        "CuriosidadesHistoricasdaAntiguidade",
+        "Trending",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 11.98
+    }
+  ]
+}

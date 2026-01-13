@@ -1,0 +1,112 @@
+{
+  "niche": "Psicologia e Comportamento Humano",
+  "searched_at": "2026-01-13T16:44:16.135706",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "PsicologiaeComportamentoHumano"
+  ],
+  "avg_duration": 32,
+  "avg_engagement": 10.3,
+  "popular_hooks": [
+    "O ChatGPT é bom, mas essas IAs são melhores",
+    "Você está perdendo tempo se não usa isso",
+    "Se você não conhece isso, está atrasado",
+    "Você está perdendo tempo se não usa isso",
+    "Eu não acredito que isso é grátis"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#PsicologiaeComportamentoHumano #Viral #Foryou #Trending",
+      "views": 4288574,
+      "likes": 19049,
+      "comments": 13195,
+      "shares": 85012,
+      "hashtags": [
+        "PsicologiaeComportamentoHumano",
+        "Viral",
+        "Trending",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 11.79
+    },
+    {
+      "title": "Você está perdendo tempo se não usa isso",
+      "description": "#Trending #PsicologiaeComportamentoHumano #Viral #Foryou",
+      "views": 4086473,
+      "likes": 444045,
+      "comments": 18369,
+      "shares": 90533,
+      "hashtags": [
+        "Trending",
+        "Viral",
+        "PsicologiaeComportamentoHumano",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 9.22
+    },
+    {
+      "title": "Se você não conhece isso, está atrasado",
+      "description": "#PsicologiaeComportamentoHumano #Viral #Trending #Foryou",
+      "views": 4060038,
+      "likes": 340415,
+      "comments": 28397,
+      "shares": 5771,
+      "hashtags": [
+        "Trending",
+        "Foryou",
+        "Viral",
+        "PsicologiaeComportamentoHumano"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 10.68
+    },
+    {
+      "title": "Você está perdendo tempo se não usa isso",
+      "description": "#Foryou #PsicologiaeComportamentoHumano #Trending #Viral",
+      "views": 3814886,
+      "likes": 435384,
+      "comments": 22937,
+      "shares": 15934,
+      "hashtags": [
+        "Viral",
+        "PsicologiaeComportamentoHumano",
+        "Trending",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 10.03
+    },
+    {
+      "title": "Eu não acredito que isso é grátis",
+      "description": "#Foryou #Viral #Trending #PsicologiaeComportamentoHumano",
+      "views": 3759703,
+      "likes": 238727,
+      "comments": 38758,
+      "shares": 59319,
+      "hashtags": [
+        "Foryou",
+        "Viral",
+        "PsicologiaeComportamentoHumano",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 9.68
+    }
+  ]
+}

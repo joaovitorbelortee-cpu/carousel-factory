@@ -1,0 +1,112 @@
+{
+  "niche": "Guia de sobrevivencia ilha deserta",
+  "searched_at": "2026-01-13T14:29:51.132850",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "Guiadesobrevivenciailhadeserta"
+  ],
+  "avg_duration": 32,
+  "avg_engagement": 10.25,
+  "popular_hooks": [
+    "Isso vai mudar sua vida em 30 segundos",
+    "POV: você descobriu esse pack de IAs",
+    "O ChatGPT é bom, mas essas IAs são melhores",
+    "Isso vai mudar sua vida em 30 segundos",
+    "Antes eu fazia isso em 5 horas, agora faço em 5 minutos"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#Guiadesobrevivenciailhadeserta #Viral #Trending #Foryou",
+      "views": 4648403,
+      "likes": 155316,
+      "comments": 44077,
+      "shares": 19395,
+      "hashtags": [
+        "Trending",
+        "Guiadesobrevivenciailhadeserta",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 10.1
+    },
+    {
+      "title": "POV: você descobriu esse pack de IAs",
+      "description": "#Viral #Trending #Guiadesobrevivenciailhadeserta #Foryou",
+      "views": 4542692,
+      "likes": 345444,
+      "comments": 13621,
+      "shares": 20772,
+      "hashtags": [
+        "Trending",
+        "Guiadesobrevivenciailhadeserta",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 11.36
+    },
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#Viral #Trending #Guiadesobrevivenciailhadeserta #Foryou",
+      "views": 4046522,
+      "likes": 24219,
+      "comments": 41800,
+      "shares": 34878,
+      "hashtags": [
+        "Trending",
+        "Guiadesobrevivenciailhadeserta",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 10.24
+    },
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#Viral #Guiadesobrevivenciailhadeserta #Trending #Foryou",
+      "views": 3630814,
+      "likes": 337151,
+      "comments": 6371,
+      "shares": 79832,
+      "hashtags": [
+        "Trending",
+        "Viral",
+        "Guiadesobrevivenciailhadeserta",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 10.61
+    },
+    {
+      "title": "Antes eu fazia isso em 5 horas, agora faço em 5 minutos",
+      "description": "#Guiadesobrevivenciailhadeserta #Foryou #Viral #Trending",
+      "views": 3435447,
+      "likes": 429825,
+      "comments": 36788,
+      "shares": 59613,
+      "hashtags": [
+        "Viral",
+        "Guiadesobrevivenciailhadeserta",
+        "Foryou",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 8.94
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "niche": "Receita cafe da manha 1 minuto",
+  "searched_at": "2026-01-13T14:38:20.880272",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "Receitacafedamanha1minuto"
+  ],
+  "avg_duration": 30,
+  "avg_engagement": 10.16,
+  "popular_hooks": [
+    "Você está perdendo tempo se não usa isso",
+    "10 segredos que parecem ilegais de tão boas",
+    "Para de usar só Receita cafe da manha 1 minuto e olha essas!",
+    "7 segredos que parecem ilegais de tão boas",
+    "Isso vai mudar sua vida em 30 segundos"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Você está perdendo tempo se não usa isso",
+      "description": "#Receitacafedamanha1minuto #Trending #Foryou #Viral",
+      "views": 4965608,
+      "likes": 318961,
+      "comments": 37731,
+      "shares": 77746,
+      "hashtags": [
+        "Viral",
+        "Receitacafedamanha1minuto",
+        "Trending",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 11.06
+    },
+    {
+      "title": "10 segredos que parecem ilegais de tão boas",
+      "description": "#Trending #Receitacafedamanha1minuto #Viral #Foryou",
+      "views": 4323340,
+      "likes": 238868,
+      "comments": 2469,
+      "shares": 32948,
+      "hashtags": [
+        "Trending",
+        "Foryou",
+        "Receitacafedamanha1minuto",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 9.81
+    },
+    {
+      "title": "Para de usar só Receita cafe da manha 1 minuto e olha essas!",
+      "description": "#Foryou #Trending #Viral #Receitacafedamanha1minuto",
+      "views": 3554194,
+      "likes": 362468,
+      "comments": 24088,
+      "shares": 10295,
+      "hashtags": [
+        "Receitacafedamanha1minuto",
+        "Trending",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 11.64
+    },
+    {
+      "title": "7 segredos que parecem ilegais de tão boas",
+      "description": "#Viral #Foryou #Trending #Receitacafedamanha1minuto",
+      "views": 3212995,
+      "likes": 289806,
+      "comments": 19742,
+      "shares": 96703,
+      "hashtags": [
+        "Viral",
+        "Trending",
+        "Foryou",
+        "Receitacafedamanha1minuto"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 10.99
+    },
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#Viral #Receitacafedamanha1minuto #Trending #Foryou",
+      "views": 2769123,
+      "likes": 484630,
+      "comments": 16360,
+      "shares": 28038,
+      "hashtags": [
+        "Receitacafedamanha1minuto",
+        "Trending",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 8.15
+    }
+  ]
+}

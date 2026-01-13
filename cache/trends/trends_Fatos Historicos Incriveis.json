@@ -1,0 +1,112 @@
+{
+  "niche": "Fatos Historicos Incriveis",
+  "searched_at": "2026-01-13T16:33:14.761717",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "FatosHistoricosIncriveis"
+  ],
+  "avg_duration": 29,
+  "avg_engagement": 9.66,
+  "popular_hooks": [
+    "Eu não acredito que isso é grátis",
+    "Isso vai mudar sua vida em 30 segundos",
+    "3 segredos que parecem ilegais de tão boas",
+    "POV: você descobriu esse pack de IAs",
+    "Essa é a melhor descoberta que fiz esse ano"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Eu não acredito que isso é grátis",
+      "description": "#Viral #FatosHistoricosIncriveis #Trending #Foryou",
+      "views": 4751782,
+      "likes": 200164,
+      "comments": 2776,
+      "shares": 6661,
+      "hashtags": [
+        "FatosHistoricosIncriveis",
+        "Trending",
+        "Foryou",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 11.05
+    },
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#Viral #Foryou #Trending #FatosHistoricosIncriveis",
+      "views": 4414957,
+      "likes": 93668,
+      "comments": 32990,
+      "shares": 57880,
+      "hashtags": [
+        "Viral",
+        "Trending",
+        "Foryou",
+        "FatosHistoricosIncriveis"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 8.5
+    },
+    {
+      "title": "3 segredos que parecem ilegais de tão boas",
+      "description": "#Viral #Foryou #Trending #FatosHistoricosIncriveis",
+      "views": 4217813,
+      "likes": 342847,
+      "comments": 28795,
+      "shares": 21854,
+      "hashtags": [
+        "Trending",
+        "Foryou",
+        "Viral",
+        "FatosHistoricosIncriveis"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 11.57
+    },
+    {
+      "title": "POV: você descobriu esse pack de IAs",
+      "description": "#Foryou #Viral #Trending #FatosHistoricosIncriveis",
+      "views": 3858265,
+      "likes": 23712,
+      "comments": 27428,
+      "shares": 20089,
+      "hashtags": [
+        "Trending",
+        "Foryou",
+        "FatosHistoricosIncriveis",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 10.29
+    },
+    {
+      "title": "Essa é a melhor descoberta que fiz esse ano",
+      "description": "#Foryou #Trending #Viral #FatosHistoricosIncriveis",
+      "views": 3560326,
+      "likes": 178546,
+      "comments": 7986,
+      "shares": 64929,
+      "hashtags": [
+        "FatosHistoricosIncriveis",
+        "Trending",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 9.06
+    }
+  ]
+}

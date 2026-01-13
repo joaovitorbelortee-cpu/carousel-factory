@@ -1,0 +1,112 @@
+{
+  "niche": "Curiosidades Cientificas Incriveis",
+  "searched_at": "2026-01-13T15:56:43.313384",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "CuriosidadesCientificasIncriveis"
+  ],
+  "avg_duration": 30,
+  "avg_engagement": 9.65,
+  "popular_hooks": [
+    "Você está perdendo tempo se não usa isso",
+    "Isso vai mudar sua vida em 30 segundos",
+    "Eu não acredito que isso é grátis",
+    "Isso vai mudar sua vida em 30 segundos",
+    "Para de usar só Curiosidades Cientificas Incriveis e olha essas!"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Você está perdendo tempo se não usa isso",
+      "description": "#Foryou #Trending #Viral #CuriosidadesCientificasIncriveis",
+      "views": 4696095,
+      "likes": 17072,
+      "comments": 30409,
+      "shares": 53472,
+      "hashtags": [
+        "Foryou",
+        "CuriosidadesCientificasIncriveis",
+        "Viral",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 9.87
+    },
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#CuriosidadesCientificasIncriveis #Trending #Viral #Foryou",
+      "views": 4598418,
+      "likes": 342344,
+      "comments": 42511,
+      "shares": 41549,
+      "hashtags": [
+        "Trending",
+        "CuriosidadesCientificasIncriveis",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 10.09
+    },
+    {
+      "title": "Eu não acredito que isso é grátis",
+      "description": "#CuriosidadesCientificasIncriveis #Foryou #Viral #Trending",
+      "views": 4119457,
+      "likes": 308436,
+      "comments": 47139,
+      "shares": 97517,
+      "hashtags": [
+        "Foryou",
+        "Viral",
+        "CuriosidadesCientificasIncriveis",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 8.16
+    },
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#Foryou #Viral #Trending #CuriosidadesCientificasIncriveis",
+      "views": 3981769,
+      "likes": 239878,
+      "comments": 47802,
+      "shares": 80208,
+      "hashtags": [
+        "CuriosidadesCientificasIncriveis",
+        "Foryou",
+        "Viral",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 11.74
+    },
+    {
+      "title": "Para de usar só Curiosidades Cientificas Incriveis e olha essas!",
+      "description": "#Foryou #Viral #Trending #CuriosidadesCientificasIncriveis",
+      "views": 3714707,
+      "likes": 385545,
+      "comments": 20468,
+      "shares": 33159,
+      "hashtags": [
+        "CuriosidadesCientificasIncriveis",
+        "Trending",
+        "Foryou",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 9.06
+    }
+  ]
+}

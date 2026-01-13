@@ -1,0 +1,39 @@
+{
+    "curiosidades roma antiga": {
+        "hooks": [
+            "Did you know Roman gladiators rarely fought to the death?",
+            "You won't believe what ancient Romans used instead of toilet paper.",
+            "Forget what you think you know about Julius Caesar.",
+            "The craziest Roman superstition involved spilling salt...",
+            "Only 1% of people know Rome was the first city to reach a population of 1 million.",
+            "This ancient Roman 'fast food' will shock you."
+        ],
+        "hashtags": [
+            "AncientRome",
+            "HistoryFacts",
+            "RomanEmpire",
+            "Archaeology",
+            "HistoryBuff"
+        ],
+        "avg_duration": 45,
+        "avg_engagement": 18.5
+    },
+    "fatos curiosos sobre gatos ninjas": {
+        "hooks": [
+            "Você sabia que existem gatos treinados por ninjas no Japão feudal?",
+            "O segredo dos gatos ninjas que a história tentou apagar",
+            "Como um gato ninja salvou um shogun de um assassinato",
+            "3 habilidades inacreditáveis dos gatos treinados para espionagem",
+            "Por que os gatos eram os melhores espiões da era samurai"
+        ],
+        "hashtags": [
+            "GatosNinjas",
+            "CuriosidadesJapao",
+            "HistoriaNinja",
+            "CatFacts",
+            "SamuraiCats"
+        ],
+        "avg_duration": 35,
+        "avg_engagement": 22.1
+    }
+}

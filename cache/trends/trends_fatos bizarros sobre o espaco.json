@@ -1,0 +1,112 @@
+{
+  "niche": "fatos bizarros sobre o espaco",
+  "searched_at": "2026-01-13T14:25:26.569737",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "fatosbizarrossobreoespaco"
+  ],
+  "avg_duration": 28,
+  "avg_engagement": 10.03,
+  "popular_hooks": [
+    "Essa é a melhor descoberta que fiz esse ano",
+    "Eu não acredito que isso é grátis",
+    "Isso vai mudar sua vida em 30 segundos",
+    "O ChatGPT é bom, mas essas IAs são melhores",
+    "3 segredos que parecem ilegais de tão boas"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Essa é a melhor descoberta que fiz esse ano",
+      "description": "#fatosbizarrossobreoespaco #Trending #Viral #Foryou",
+      "views": 4433231,
+      "likes": 461265,
+      "comments": 40012,
+      "shares": 52039,
+      "hashtags": [
+        "Trending",
+        "Foryou",
+        "fatosbizarrossobreoespaco",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 8.65
+    },
+    {
+      "title": "Eu não acredito que isso é grátis",
+      "description": "#Trending #Foryou #fatosbizarrossobreoespaco #Viral",
+      "views": 3655476,
+      "likes": 487685,
+      "comments": 16019,
+      "shares": 54267,
+      "hashtags": [
+        "Trending",
+        "Viral",
+        "fatosbizarrossobreoespaco",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 9.97
+    },
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#fatosbizarrossobreoespaco #Foryou #Trending #Viral",
+      "views": 3537369,
+      "likes": 208273,
+      "comments": 16699,
+      "shares": 74737,
+      "hashtags": [
+        "fatosbizarrossobreoespaco",
+        "Trending",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 8.62
+    },
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#fatosbizarrossobreoespaco #Foryou #Trending #Viral",
+      "views": 3175278,
+      "likes": 456054,
+      "comments": 39261,
+      "shares": 30187,
+      "hashtags": [
+        "Viral",
+        "Foryou",
+        "Trending",
+        "fatosbizarrossobreoespaco"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 11.74
+    },
+    {
+      "title": "3 segredos que parecem ilegais de tão boas",
+      "description": "#Trending #Foryou #fatosbizarrossobreoespaco #Viral",
+      "views": 2766177,
+      "likes": 215587,
+      "comments": 44491,
+      "shares": 10869,
+      "hashtags": [
+        "fatosbizarrossobreoespaco",
+        "Foryou",
+        "Viral",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 10.68
+    }
+  ]
+}

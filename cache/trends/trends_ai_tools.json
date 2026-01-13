@@ -1,0 +1,113 @@
+{
+  "niche": "ai_tools",
+  "searched_at": "2026-01-13T11:35:36.423988",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "AITools",
+    "ChatGPT",
+    "ArtificialIntelligence",
+    "IA",
+    "TechTok"
+  ],
+  "avg_duration": 50,
+  "avg_engagement": 17.07,
+  "popular_hooks": [
+    "Antes eu fazia isso em 5 horas, agora faço em 5 minutos",
+    "Para de usar só ChatGPT e olha essas!",
+    "Eu não acredito que isso é grátis",
+    "Isso vai mudar sua vida em 30 segundos",
+    "Se você não conhece isso, está atrasado"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Antes eu fazia isso em 5 horas, agora faço em 5 minutos",
+      "description": "#AITools #ChatGPT #ArtificialIntelligence #TechTok",
+      "views": 4598097,
+      "likes": 493024,
+      "comments": 21599,
+      "shares": 47633,
+      "hashtags": [
+        "ArtificialIntelligence",
+        "ChatGPT",
+        "AITools",
+        "ProductivityHacks"
+      ],
+      "music": "Trending Sound",
+      "duration": 45,
+      "engagement_rate": 17.46
+    },
+    {
+      "title": "Para de usar só ChatGPT e olha essas!",
+      "description": "#AITools #ChatGPT #IA #FreeAI",
+      "views": 3447961,
+      "likes": 336967,
+      "comments": 19240,
+      "shares": 5225,
+      "hashtags": [
+        "AITools",
+        "ArtificialIntelligence",
+        "AIHacks",
+        "FreeAI"
+      ],
+      "music": "Trending Sound",
+      "duration": 60,
+      "engagement_rate": 8.53
+    },
+    {
+      "title": "Eu não acredito que isso é grátis",
+      "description": "#ArtificialIntelligence #FreeAI #IA #AIHacks",
+      "views": 3353003,
+      "likes": 485454,
+      "comments": 43049,
+      "shares": 50141,
+      "hashtags": [
+        "FreeAI",
+        "TechTok",
+        "ChatGPT",
+        "AIHacks"
+      ],
+      "music": "Trending Sound",
+      "duration": 60,
+      "engagement_rate": 12.76
+    },
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#ProductivityHacks #AITools #ChatGPT #IA",
+      "views": 3072542,
+      "likes": 367996,
+      "comments": 20965,
+      "shares": 10730,
+      "hashtags": [
+        "ChatGPT",
+        "ProductivityHacks",
+        "ArtificialIntelligence",
+        "AITools"
+      ],
+      "music": "Trending Sound",
+      "duration": 15,
+      "engagement_rate": 22.0
+    },
+    {
+      "title": "Se você não conhece isso, está atrasado",
+      "description": "#ChatGPT #AIHacks #ArtificialIntelligence #IA",
+      "views": 2334602,
+      "likes": 44339,
+      "comments": 35512,
+      "shares": 57420,
+      "hashtags": [
+        "ChatGPT",
+        "ProductivityHacks",
+        "AITools",
+        "ArtificialIntelligence"
+      ],
+      "music": "Trending Sound",
+      "duration": 45,
+      "engagement_rate": 14.59
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "niche": "Curiosidades da Roma Antiga",
+  "searched_at": "2026-01-13T14:28:55.976947",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "CuriosidadesdaRomaAntiga"
+  ],
+  "avg_duration": 32,
+  "avg_engagement": 9.66,
+  "popular_hooks": [
+    "Isso vai mudar sua vida em 30 segundos",
+    "Eu não acredito que isso é grátis",
+    "Essa é a melhor descoberta que fiz esse ano",
+    "POV: você descobriu esse pack de IAs",
+    "10 segredos que parecem ilegais de tão boas"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Isso vai mudar sua vida em 30 segundos",
+      "description": "#Foryou #Viral #CuriosidadesdaRomaAntiga #Trending",
+      "views": 4498260,
+      "likes": 243747,
+      "comments": 22631,
+      "shares": 59258,
+      "hashtags": [
+        "CuriosidadesdaRomaAntiga",
+        "Foryou",
+        "Trending",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 8.32
+    },
+    {
+      "title": "Eu não acredito que isso é grátis",
+      "description": "#Viral #Trending #CuriosidadesdaRomaAntiga #Foryou",
+      "views": 4482628,
+      "likes": 26818,
+      "comments": 18957,
+      "shares": 89077,
+      "hashtags": [
+        "Foryou",
+        "Viral",
+        "CuriosidadesdaRomaAntiga",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 8.47
+    },
+    {
+      "title": "Essa é a melhor descoberta que fiz esse ano",
+      "description": "#Trending #CuriosidadesdaRomaAntiga #Foryou #Viral",
+      "views": 4064482,
+      "likes": 449866,
+      "comments": 12183,
+      "shares": 34745,
+      "hashtags": [
+        "Trending",
+        "CuriosidadesdaRomaAntiga",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 9.94
+    },
+    {
+      "title": "POV: você descobriu esse pack de IAs",
+      "description": "#Foryou #Viral #Trending #CuriosidadesdaRomaAntiga",
+      "views": 3584387,
+      "likes": 349640,
+      "comments": 4164,
+      "shares": 23633,
+      "hashtags": [
+        "Trending",
+        "Foryou",
+        "CuriosidadesdaRomaAntiga",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 11.56
+    },
+    {
+      "title": "10 segredos que parecem ilegais de tão boas",
+      "description": "#Viral #CuriosidadesdaRomaAntiga #Foryou #Trending",
+      "views": 3415569,
+      "likes": 93920,
+      "comments": 11397,
+      "shares": 82292,
+      "hashtags": [
+        "CuriosidadesdaRomaAntiga",
+        "Foryou",
+        "Viral",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 8.98
+    }
+  ]
+}

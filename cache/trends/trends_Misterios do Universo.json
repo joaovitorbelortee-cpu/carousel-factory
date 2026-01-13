@@ -1,0 +1,112 @@
+{
+  "niche": "Misterios do Universo",
+  "searched_at": "2026-01-13T16:40:02.008170",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "MisteriosdoUniverso"
+  ],
+  "avg_duration": 32,
+  "avg_engagement": 10.01,
+  "popular_hooks": [
+    "Essa é a melhor descoberta que fiz esse ano",
+    "10 segredos que parecem ilegais de tão boas",
+    "10 segredos que parecem ilegais de tão boas",
+    "Se você não conhece isso, está atrasado",
+    "O ChatGPT é bom, mas essas IAs são melhores"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Essa é a melhor descoberta que fiz esse ano",
+      "description": "#Trending #Foryou #Viral #MisteriosdoUniverso",
+      "views": 4809701,
+      "likes": 126687,
+      "comments": 26956,
+      "shares": 4085,
+      "hashtags": [
+        "Foryou",
+        "Trending",
+        "Viral",
+        "MisteriosdoUniverso"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 11.84
+    },
+    {
+      "title": "10 segredos que parecem ilegais de tão boas",
+      "description": "#Trending #Viral #MisteriosdoUniverso #Foryou",
+      "views": 3942926,
+      "likes": 317794,
+      "comments": 40948,
+      "shares": 52918,
+      "hashtags": [
+        "Foryou",
+        "Viral",
+        "MisteriosdoUniverso",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 11.59
+    },
+    {
+      "title": "10 segredos que parecem ilegais de tão boas",
+      "description": "#Foryou #Viral #Trending #MisteriosdoUniverso",
+      "views": 2850739,
+      "likes": 437283,
+      "comments": 40950,
+      "shares": 9942,
+      "hashtags": [
+        "Viral",
+        "Foryou",
+        "MisteriosdoUniverso",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 8.14
+    },
+    {
+      "title": "Se você não conhece isso, está atrasado",
+      "description": "#Viral #MisteriosdoUniverso #Foryou #Trending",
+      "views": 2425253,
+      "likes": 161150,
+      "comments": 22038,
+      "shares": 57743,
+      "hashtags": [
+        "Viral",
+        "Trending",
+        "Foryou",
+        "MisteriosdoUniverso"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 11.66
+    },
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#Viral #Trending #MisteriosdoUniverso #Foryou",
+      "views": 2024602,
+      "likes": 234257,
+      "comments": 30508,
+      "shares": 95614,
+      "hashtags": [
+        "Viral",
+        "Foryou",
+        "Trending",
+        "MisteriosdoUniverso"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 11.28
+    }
+  ]
+}

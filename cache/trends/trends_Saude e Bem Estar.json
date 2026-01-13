@@ -1,0 +1,112 @@
+{
+  "niche": "Saude e Bem Estar",
+  "searched_at": "2026-01-13T16:45:02.217903",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "SaudeeBemEstar"
+  ],
+  "avg_duration": 31,
+  "avg_engagement": 10.08,
+  "popular_hooks": [
+    "Você está perdendo tempo se não usa isso",
+    "Essa é a melhor descoberta que fiz esse ano",
+    "Para de usar só Saude e Bem Estar e olha essas!",
+    "Se você não conhece isso, está atrasado",
+    "Você está perdendo tempo se não usa isso"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "Você está perdendo tempo se não usa isso",
+      "description": "#Trending #Viral #Foryou #SaudeeBemEstar",
+      "views": 4969127,
+      "likes": 417281,
+      "comments": 48153,
+      "shares": 31632,
+      "hashtags": [
+        "Foryou",
+        "Trending",
+        "Viral",
+        "SaudeeBemEstar"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 11.58
+    },
+    {
+      "title": "Essa é a melhor descoberta que fiz esse ano",
+      "description": "#Foryou #Trending #SaudeeBemEstar #Viral",
+      "views": 4117237,
+      "likes": 273478,
+      "comments": 41739,
+      "shares": 39274,
+      "hashtags": [
+        "Trending",
+        "SaudeeBemEstar",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 8.24
+    },
+    {
+      "title": "Para de usar só Saude e Bem Estar e olha essas!",
+      "description": "#Foryou #Trending #Viral #SaudeeBemEstar",
+      "views": 3998829,
+      "likes": 391204,
+      "comments": 44993,
+      "shares": 67491,
+      "hashtags": [
+        "Foryou",
+        "SaudeeBemEstar",
+        "Viral",
+        "Trending"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 10.64
+    },
+    {
+      "title": "Se você não conhece isso, está atrasado",
+      "description": "#Trending #Viral #SaudeeBemEstar #Foryou",
+      "views": 3752548,
+      "likes": 235814,
+      "comments": 11106,
+      "shares": 66189,
+      "hashtags": [
+        "Trending",
+        "Viral",
+        "Foryou",
+        "SaudeeBemEstar"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 11.88
+    },
+    {
+      "title": "Você está perdendo tempo se não usa isso",
+      "description": "#Trending #Viral #SaudeeBemEstar #Foryou",
+      "views": 3644011,
+      "likes": 381736,
+      "comments": 34539,
+      "shares": 33108,
+      "hashtags": [
+        "Viral",
+        "Trending",
+        "Foryou",
+        "SaudeeBemEstar"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 11.31
+    }
+  ]
+}

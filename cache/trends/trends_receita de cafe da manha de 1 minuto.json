@@ -1,0 +1,112 @@
+{
+  "niche": "receita de cafe da manha de 1 minuto",
+  "searched_at": "2026-01-13T14:25:30.346996",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "receitadecafedamanhade1minuto"
+  ],
+  "avg_duration": 32,
+  "avg_engagement": 9.86,
+  "popular_hooks": [
+    "POV: você descobriu esse pack de IAs",
+    "O ChatGPT é bom, mas essas IAs são melhores",
+    "10 segredos que parecem ilegais de tão boas",
+    "Eu não acredito que isso é grátis",
+    "O ChatGPT é bom, mas essas IAs são melhores"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "POV: você descobriu esse pack de IAs",
+      "description": "#Trending #Foryou #Viral #receitadecafedamanhade1minuto",
+      "views": 4661438,
+      "likes": 372569,
+      "comments": 33730,
+      "shares": 21482,
+      "hashtags": [
+        "receitadecafedamanhade1minuto",
+        "Foryou",
+        "Trending",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 8.89
+    },
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#Viral #Trending #Foryou #receitadecafedamanhade1minuto",
+      "views": 4321833,
+      "likes": 86661,
+      "comments": 23580,
+      "shares": 26840,
+      "hashtags": [
+        "Viral",
+        "Trending",
+        "Foryou",
+        "receitadecafedamanhade1minuto"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 11.13
+    },
+    {
+      "title": "10 segredos que parecem ilegais de tão boas",
+      "description": "#Trending #receitadecafedamanhade1minuto #Viral #Foryou",
+      "views": 3286459,
+      "likes": 320049,
+      "comments": 3641,
+      "shares": 56133,
+      "hashtags": [
+        "receitadecafedamanhade1minuto",
+        "Viral",
+        "Trending",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 10.55
+    },
+    {
+      "title": "Eu não acredito que isso é grátis",
+      "description": "#receitadecafedamanhade1minuto #Viral #Foryou #Trending",
+      "views": 2902153,
+      "likes": 17631,
+      "comments": 38804,
+      "shares": 70897,
+      "hashtags": [
+        "Trending",
+        "receitadecafedamanhade1minuto",
+        "Viral",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 11.47
+    },
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#Trending #Foryou #receitadecafedamanhade1minuto #Viral",
+      "views": 2667245,
+      "likes": 28544,
+      "comments": 8373,
+      "shares": 97722,
+      "hashtags": [
+        "Viral",
+        "Trending",
+        "receitadecafedamanhade1minuto",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 10.15
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "niche": "Tecnologia do Futuro e Inovacao",
+  "searched_at": "2026-01-13T16:25:00.826042",
+  "total_videos_found": 10,
+  "top_hashtags": [
+    "Viral",
+    "Trending",
+    "Foryou",
+    "TecnologiadoFuturoeInovacao"
+  ],
+  "avg_duration": 28,
+  "avg_engagement": 10.03,
+  "popular_hooks": [
+    "5 segredos que parecem ilegais de tão boas",
+    "O ChatGPT é bom, mas essas IAs são melhores",
+    "Antes eu fazia isso em 5 horas, agora faço em 5 minutos",
+    "Eu não acredito que isso é grátis",
+    "O ChatGPT é bom, mas essas IAs são melhores"
+  ],
+  "recommended_styles": [
+    "listicle",
+    "pov",
+    "before_after"
+  ],
+  "videos": [
+    {
+      "title": "5 segredos que parecem ilegais de tão boas",
+      "description": "#Foryou #Viral #Trending #TecnologiadoFuturoeInovacao",
+      "views": 4433174,
+      "likes": 24909,
+      "comments": 39979,
+      "shares": 70801,
+      "hashtags": [
+        "Trending",
+        "Foryou",
+        "TecnologiadoFuturoeInovacao",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 11.71
+    },
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#TecnologiadoFuturoeInovacao #Trending #Foryou #Viral",
+      "views": 4261534,
+      "likes": 335552,
+      "comments": 46576,
+      "shares": 26215,
+      "hashtags": [
+        "TecnologiadoFuturoeInovacao",
+        "Foryou",
+        "Trending",
+        "Viral"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 10.24
+    },
+    {
+      "title": "Antes eu fazia isso em 5 horas, agora faço em 5 minutos",
+      "description": "#TecnologiadoFuturoeInovacao #Trending #Viral #Foryou",
+      "views": 3236293,
+      "likes": 406557,
+      "comments": 2183,
+      "shares": 14797,
+      "hashtags": [
+        "Viral",
+        "Trending",
+        "Foryou",
+        "TecnologiadoFuturoeInovacao"
+      ],
+      "music": "Trending Sound",
+      "duration": 25,
+      "engagement_rate": 8.69
+    },
+    {
+      "title": "Eu não acredito que isso é grátis",
+      "description": "#Trending #TecnologiadoFuturoeInovacao #Viral #Foryou",
+      "views": 2882926,
+      "likes": 240219,
+      "comments": 15276,
+      "shares": 38710,
+      "hashtags": [
+        "Viral",
+        "TecnologiadoFuturoeInovacao",
+        "Trending",
+        "Foryou"
+      ],
+      "music": "Trending Sound",
+      "duration": 35,
+      "engagement_rate": 9.21
+    },
+    {
+      "title": "O ChatGPT é bom, mas essas IAs são melhores",
+      "description": "#Viral #Trending #TecnologiadoFuturoeInovacao #Foryou",
+      "views": 2800928,
+      "likes": 492924,
+      "comments": 998,
+      "shares": 73210,
+      "hashtags": [
+        "Viral",
+        "Foryou",
+        "Trending",
+        "TecnologiadoFuturoeInovacao"
+      ],
+      "music": "Trending Sound",
+      "duration": 30,
+      "engagement_rate": 10.71
+    }
+  ]
+}
