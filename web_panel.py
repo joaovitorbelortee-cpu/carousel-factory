@@ -8,26 +8,30 @@ import os
 import sys
 import io
 import zipfile
+import threading
+import json
+from datetime import datetime
+from dotenv import load_dotenv
+
+# Configurar Pastas e Logger antes de tudo
+sys.path.insert(0, os.path.dirname(__file__))
+from logger import get_logger
+logger = get_logger()
+
+from gemini_integration import generate_carousel_content, get_temas_para_nicho, TEMAS_POR_NICHO
+from carousel_generator import generate_carousel
+
 try:
     import firebase_admin
     from firebase_admin import credentials, auth
     FIREBASE_AVAILABLE = True
 except ImportError:
     FIREBASE_AVAILABLE = False
-    logger.warning("firebase-admin não instalado. Funcionalidades Firebase desativadas.")
-from datetime import datetime
-from dotenv import load_dotenv
+    print("firebase-admin não instalado. Funcionalidades Firebase desativadas.")
 
 # Carregar variaveis de ambiente
 load_dotenv()
 
-# Configurar Imports
-sys.path.insert(0, os.path.dirname(__file__))
-from gemini_integration import generate_carousel_content, get_temas_para_nicho, TEMAS_POR_NICHO
-from carousel_generator import generate_carousel
-from logger import get_logger
-
-logger = get_logger()
 app = Flask(__name__)
 
 # --- CONFIGURACAO FIREBASE ADMIN ---
