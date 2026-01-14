@@ -5,5 +5,5 @@ google-auth-oauthlib>=1.0.0
 google-auth>=2.0.0
 requests>=2.31.0
 python-dotenv>=1.0.0
-# Adicionado firebase-admin para suportar login Firebase
-firebase-admin>=6.2.0
+# firebase-admin comentado para teste de estabilidade
+# firebase-admin>=6.2.0
