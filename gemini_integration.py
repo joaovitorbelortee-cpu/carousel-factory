@@ -176,15 +176,8 @@ def generate_carousel_content(topic: str, nicho: str = "Geral", num_slides: int 
                 
     except Exception as e:
         print(f"Falha na IA Real ({e}).")
-        # Usuario removeu modo demo. Retorna vazio para dar erro no frontend se falhar.
-        return []
 
     return [] # Se nao entrou em nenhum if
-
-
-    except Exception as e:
-        print(f"Erro na geracao IA: {e}")
-        return []
 
 # --- REINSERINDO A LOGICA COMPLETA DOS TEMPLATES (ESSENCIAL PARA FUNCIONAR SEM KEY) ---
 # (Vou garantir que o write_to_file final tenha a logica completa do passo 2465)

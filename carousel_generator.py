@@ -27,18 +27,30 @@ STYLES = {
 }
 
 def get_font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
-    """Carrega fonte do sistema."""
+    """Carrega fonte do sistema com suporte multiplataforma (Windows/Vercel Linux)."""
     font_paths = [
+        # Windows
         "C:/Windows/Fonts/segoeuib.ttf" if bold else "C:/Windows/Fonts/segoeui.ttf",
         "C:/Windows/Fonts/arialbd.ttf" if bold else "C:/Windows/Fonts/arial.ttf",
+        # Linux (Vercel)
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation/LiberationSans.ttf",
+        "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/noto/NotoSans.ttf",
     ]
+    
     for path in font_paths:
         if os.path.exists(path):
             try:
                 return ImageFont.truetype(path, size)
-            except:
+            except Exception as e:
+                logger.debug(f"Falha ao carregar fonte {path}: {e}")
                 continue
-    return ImageFont.load_default()
+    
+    # Fallback final
+    try:
+        return ImageFont.load_default()
+    except:
+        return None
 
 def create_gradient_bg(size: tuple, color_start: tuple, color_end: tuple) -> Image.Image:
     """Cria background com gradiente vertical."""

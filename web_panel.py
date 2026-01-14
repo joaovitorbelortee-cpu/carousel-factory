@@ -34,6 +34,15 @@ load_dotenv()
 
 app = Flask(__name__)
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    logger.error(f"RUNTIME ERROR: {str(e)}", exc_info=True)
+    return jsonify({
+        "success": False, 
+        "message": "Erro Interno no Servidor (Business Level Debug)",
+        "error": str(e)
+    }), 500
+
 # --- CONFIGURACAO FIREBASE ADMIN ---
 if FIREBASE_AVAILABLE:
     try:
