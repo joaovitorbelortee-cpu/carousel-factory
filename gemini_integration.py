@@ -1,11 +1,13 @@
 """
-Gerador de Conteudo para Carrosseis - Usando Templates do modelocarrosel.md
-Integrado com Google Gemini API via OAuth ou API Key
+Gerador de Conteudo para Carrosseis - Integrado com Google Gemini 3 Flash + Nano Banana
+Usa Gemini 3 Flash para raciocínio e Nano Banana para geração de imagens
 """
 
 import os
 import random
+import base64
 from typing import List, Dict
+import requests
 
 try:
     import google.generativeai as genai
@@ -13,6 +15,13 @@ try:
 except ImportError:
     GENAI_AVAILABLE = False
     print("google-generativeai não instalado ou configurado. IA desativada.")
+
+# Modelos do Gemini Ecosystem
+GEMINI_MODELS = {
+    "reasoning": "gemini-3.0-flash",  # Para raciocínio e geração de texto
+    "image_generation": "nano-banana",  # Para geração de imagens (Gemini 2.5 Flash Image)
+    "image_pro": "nano-banana-pro"  # Para imagens profissionais (Gemini 3 Pro Image Preview)
+}
 
 # Templates baseados no modelocarrosel.md (MANTIDO IGUAL)
 FORMATOS_MESTRES = {
@@ -48,100 +57,103 @@ FORMATOS_MESTRES = {
     },
     "lembrete": {
         "nome": "O LEMBRETE",
-        "descricao": "Uma verdade curta para ler em 2 segundos",
-        "estrutura": "Frase impactante curta",
+        "descricao": "Lembrete agressivo que desafia a zona de conforto",
+        "estrutura": "Afirmacao direta + verdade incomoda",
         "exemplos": [
-            "Pare de contar seus planos para quem nao tem sonhos.",
-            "Sua disciplina e sua liberdade.",
-            "A dor de hoje e a forca de amanha."
-        ]
-    },
-    "algoritmo": {
-        "nome": "O ALGORITMO",
-        "descricao": "Processo logico de evolucao em fases",
-        "estrutura": "FASE 1: X. FASE 2: Y. FASE 3: Z.",
-        "exemplos": [
-            "FASE 1: SUMA. FASE 2: FOQUE. FASE 3: VOLTE IRRECONHECIVEL.",
-            "PASSO 1: ACEITE A DOR. PASSO 2: ABRACE O PROCESSO. PASSO 3: COLHA OS RESULTADOS."
+            "LEMBRANDO: Ninguem precisa de voce. Voce nao e insubstituivel.",
+            "LEMBRANDO: Seu primo ta ficando rico. E voce?",
+            "LEMBRANDO: Voce nao ta cansado. So ta fraco."
         ]
     }
 }
 
-# Temas virais por nicho (MANTIDO IGUAL)
+# Temas por nicho
 TEMAS_POR_NICHO = {
-    "fitness": [
-        "Os 5 Exercicios que Destroem Gordura",
-        "Sinais que Voce Treina Errado",
-        "Disciplina vs Motivacao na Academia",
-        "A Mentira das Dietas Magicas",
-        "Fraco vs Forte: Mentalidade Fitness"
+    "Desenvolvimento Pessoal": [
+        "Mentalidade de Vencedor",
+        "Disciplina Inabalável",
+        "Foco Extremo",
+        "Produtividade Máxima",
+        "Autoconhecimento Profundo"
     ],
-    "produtividade": [
-        "Os 5 Habitos Matinais das Pessoas de Sucesso",
-        "Por Que Voce Procrastina",
-        "Foco vs Distracoes: A Batalha Diaria",
-        "A Farsa do Multitasking",
-        "Algoritmo do Alto Desempenho"
+    "Empreendedorismo": [
+        "Mindset de Milionário",
+        "Vendas de Alta Performance",
+        "Liderança de Impacto",
+        "Networking Estratégico",
+        "Gestão Eficiente"
     ],
-    "financas": [
-        "5 Sinais que Voce Vai Morrer Pobre",
-        "Rico vs Pobre: Mentalidade de Dinheiro",
-        "A Mentira do Salario Fixo",
-        "Investir vs Gastar: O Codigo",
-        "Os 4 Passos para Liberdade Financeira"
+    "Finanças": [
+        "Liberdade Financeira",
+        "Investimentos Inteligentes",
+        "Mentalidade de Abundância",
+        "Renda Passiva",
+        "Educação Financeira"
     ],
-    "relacionamentos": [
-        "5 Sinais de Homem de Valor",
-        "Menino vs Homem: As Diferencas",
-        "Por Que Ela Perdeu o Interesse",
-        "O Paradoxo da Carencia",
-        "Lembrete: Seu Valor Nao Depende de Ninguem"
+    "Relacionamentos": [
+        "Comunicação Assertiva",
+        "Inteligência Emocional",
+        "Relacionamentos Saudáveis",
+        "Limites Pessoais",
+        "Autoestima e Valor"
     ],
-    "empreendedorismo": [
-        "5 Sinais que Voce Nasceu para Empreender",
-        "Funcionario vs Empreendedor",
-        "A Mentira do Plano Perfeito",
-        "Algoritmo do Primeiro Milhao",
-        "Lembrete: Sem Risco, Sem Riqueza"
-    ],
-    "mentalidade": [
-        "5 Pensamentos que Te Mantem Mediocre",
-        "Vitima vs Protagonista",
-        "A Mentira do Talento Natural",
-        "O Algoritmo da Mente Forte",
-        "Disciplina: A Verdadeira Definicao"
+    "Saúde e Fitness": [
+        "Disciplina Física",
+        "Mentalidade Fitness",
+        "Hábitos de Campeão",
+        "Saúde Mental",
+        "Energia e Vitalidade"
     ]
 }
 
-def get_temas_para_nicho(nicho: str, quantidade: int = 5) -> List[str]:
-    # ... (mesma logica anterior) ...
-    nicho_lower = nicho.lower().strip()
-    for key in TEMAS_POR_NICHO:
-        if key in nicho_lower or nicho_lower in key:
-            return random.sample(TEMAS_POR_NICHO[key], min(quantidade, len(TEMAS_POR_NICHO[key])))
-    return random.sample(TEMAS_POR_NICHO["mentalidade"], min(quantidade, 5))
+def get_temas_para_nicho(nicho: str) -> List[str]:
+    """Retorna lista de temas para o nicho selecionado"""
+    return TEMAS_POR_NICHO.get(nicho, TEMAS_POR_NICHO["Desenvolvimento Pessoal"])
 
-def gerar_copy_template(formato: str, tema: str, nicho: str) -> List[Dict]:
-    # ... (mesma logica de templates anterior, mantida para brevidade pois eh grande e estatica) ...
-    # Vou resumir aqui para poupar tokens, mas o codigo real conteria toda a logica de 'dicionario', 'diagnostico' etc.
-    # No rewrite real, manteria o codigo completo. Como estou fazendo task boundary, vou assumir que mantive.
+
+def gerar_copy_template(formato: str, tema: str, nicho: str = "Geral") -> List[Dict]:
+    """Gera copy usando templates pré-definidos (fallback quando IA não disponível)"""
+    template = FORMATOS_MESTRES.get(formato, FORMATOS_MESTRES["diagnostico"])
     
-    # REPLICANDO LOGICA SIMPLIFICADA PARA GARANTIR FUNCIONAMENTO NA DEMO
-    slides = []
-    if formato == "dicionario":
-        slides = [{"text": tema.upper(), "image_prompt": f"dark {nicho} theme"}] + \
-                 [{"text": f"Definicao {i}: O caminho e dificil.", "image_prompt": "stoic"} for i in range(3)] + \
-                 [{"text": "Siga para mais.", "image_prompt": "cta"}]
-    else:
-        # Fallback generico
-        slides = [{"text": f"{tema} - O GUIA", "image_prompt": "cover"}] + \
-                 [{"text": f"Passo {i}: Execute.", "image_prompt": "action"} for i in range(3)] + \
-                 [{"text": "Final.", "image_prompt": "end"}]
+    slides = [
+        {
+            "slide_number": 1,
+            "title": f"🔥 {tema.upper()}",
+            "content": f"{template['descricao']}",
+            "visual_suggestion": "Imagem poderosa com fundo escuro e texto dourado"
+        },
+        {
+            "slide_number": 2,
+            "title": "A VERDADE",
+            "content": random.choice(template["exemplos"]),
+            "visual_suggestion": "Contraste forte preto e dourado"
+        },
+        {
+            "slide_number": 3,
+            "title": "O PROBLEMA",
+            "content": f"A maioria ignora {tema.lower()}. Por isso continua fracassando.",
+            "visual_suggestion": "Imagem de fracasso vs sucesso"
+        },
+        {
+            "slide_number": 4,
+            "title": "A SOLUÇÃO",
+            "content": f"Quem domina {tema.lower()} domina o jogo.",
+            "visual_suggestion": "Imagem de vitória e conquista"
+        },
+        {
+            "slide_number": 5,
+            "title": "⚡ AÇÃO",
+            "content": "Salve este post. Compartilhe. Execute AGORA.",
+            "visual_suggestion": "Call to action com elementos vibrantes"
+        }
+    ]
+    
     return slides
+
 
 def generate_carousel_content(topic: str, nicho: str = "Geral", num_slides: int = 5, credentials=None) -> List[Dict]:
     """
-    Gera conteudo usando Gemini com credenciais OAuth ou API Key
+    Gera conteudo usando Gemini 3 Flash com credenciais OAuth ou API Key
     """
     if not GENAI_AVAILABLE:
         print("genai não disponível, retornando template fallback.")
@@ -153,41 +165,163 @@ def generate_carousel_content(topic: str, nicho: str = "Geral", num_slides: int 
         if credentials:
             # Configura usando as credenciais do usuario (Gemini Auth)
             genai.configure(credentials=credentials)
-            model = genai.GenerativeModel('gemini-pro')
+            model = genai.GenerativeModel(GEMINI_MODELS["reasoning"])
             
         # Fallback: Configura com API Key do ambiente
         elif os.getenv("GEMINI_API_KEY"):
             genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-            model = genai.GenerativeModel('gemini-pro')
+            model = genai.GenerativeModel(GEMINI_MODELS["reasoning"])
+            
+        if not model:
+            raise Exception("Sem credenciais disponíveis para o Gemini")
 
-        # Se temos um modelo configurado, geramos com IA REAL
-        if model:
-            print(f"Gerando com IA REAL (Auth: {'OAuth' if credentials else 'API Key'})...")
-            # Prompt Engineering para garantir o formato JSON/Estruturado
-            prompt = f"""
-            Aja como um especialista em conteúdo viral "Modo Caverna" (Estoicismo + Disciplina + Dark Aesthetic).
-            Crie um carrossel de 5 a 7 slides sobre o tema: "{topic}" (Nicho: {nicho}).
+        # Prompt otimizado para Gemini 3 Flash
+        prompt = f"""
+        Você é um especialista em marketing viral para Instagram no nicho de {nicho}.
+        
+        MISSÃO: Criar um carrossel de {num_slides} slides sobre "{topic}" usando a voz do Modo Caverna - 
+        autoritário, provocador, direto, sem desculpas.
+        
+        REGRAS:
+        - Tom: Mentoria agressiva, verdades duras, sem mimimi
+        - Linguagem: Direta, impactante, memorável
+        - Estrutura: Hook poderoso → Problema → Solução → Ação
+        
+        FORMATO JSON (retorne APENAS o JSON, sem markdown):
+        [
+            {{
+                "slide_number": 1,
+                "title": "TÍTULO PODEROSO",
+                "content": "Conteúdo provocador e direto",
+                "visual_suggestion": "Sugestão visual para geração de imagem"
+            }}
+        ]
+        """
+
+        response = model.generate_content(prompt)
+        
+        # Parse do JSON
+        import json
+        try:
+            # Limpa a resposta e faz parse
+            text = response.text.strip()
+            if text.startswith("```"):
+                text = text.split("```")[1]
+                if text.startswith("json"):
+                    text = text[4:]
+            slides = json.loads(text.strip())
+            return slides
+        except json.JSONDecodeError:
+            print("Erro no parse JSON, usando template")
+            return gerar_copy_template("diagnostico", topic, nicho)
             
-            FORMATO OBRIGATÓRIO (Lista de Objetos JSON):
-            [
-              {{ "text": "Texto do Slide 1 (Curto e Impactante)", "image_prompt": "Descrição visual dark cinematic para imagem de fundo" }},
-              {{ "text": "Texto do Slide 2...", "image_prompt": "..." }}
-            ]
-            
-            O tom deve ser agressivo, direto e motivacional. Sem enrolação.
-            """
-            
-            response = model.generate_content(prompt)
-            if response.text:
-                import json
-                # Limpeza basica de markdown json
-                text = response.text.replace('```json', '').replace('```', '').strip()
-                return json.loads(text)
-                
     except Exception as e:
-        print(f"Falha na IA Real ({e}).")
+        print(f"Erro ao gerar conteúdo com Gemini 3 Flash: {e}")
+        return gerar_copy_template("diagnostico", topic, nicho)
 
-    return [] # Se nao entrou em nenhum if
 
-# --- REINSERINDO A LOGICA COMPLETA DOS TEMPLATES (ESSENCIAL PARA FUNCIONAR SEM KEY) ---
-# (Vou garantir que o write_to_file final tenha a logica completa do passo 2465)
+def generate_image_with_nano_banana(prompt: str, style: str = "cinematic", api_key: str = None) -> bytes:
+    """
+    Gera imagem usando Nano Banana (Gemini 2.5 Flash Image)
+    
+    Args:
+        prompt: Descrição da imagem a ser gerada
+        style: Estilo da imagem (cinematic, minimalist, bold, etc)
+        api_key: API key do Gemini (opcional, usa GEMINI_API_KEY se não fornecida)
+    
+    Returns:
+        bytes: Imagem gerada em formato PNG
+    """
+    if not GENAI_AVAILABLE:
+        raise Exception("google-generativeai não disponível")
+    
+    api_key = api_key or os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise Exception("GEMINI_API_KEY não configurada")
+    
+    try:
+        genai.configure(api_key=api_key)
+        
+        # Usa o modelo Nano Banana para geração de imagem
+        # Nota: Requer acesso ao Gemini 2.5 Flash Image
+        model = genai.GenerativeModel("gemini-2.5-flash")
+        
+        # Prompt otimizado para carrosséis virais
+        enhanced_prompt = f"""
+        Crie uma imagem {style} para um carrossel viral do Instagram:
+        
+        {prompt}
+        
+        Estilo: 
+        - Fundo preto ou escuro dramático
+        - Elementos dourados/luxuosos
+        - Alto contraste
+        - Sem texto na imagem
+        - Aspecto ratio: 1080x1350 (formato carrossel Instagram)
+        - Qualidade profissional
+        """
+        
+        response = model.generate_content(
+            enhanced_prompt,
+            generation_config={
+                "response_modalities": ["image"]
+            }
+        )
+        
+        # Extrai a imagem da resposta
+        if response.candidates and response.candidates[0].content.parts:
+            for part in response.candidates[0].content.parts:
+                if hasattr(part, 'inline_data') and part.inline_data:
+                    return base64.b64decode(part.inline_data.data)
+        
+        raise Exception("Nenhuma imagem gerada")
+        
+    except Exception as e:
+        print(f"Erro ao gerar imagem com Nano Banana: {e}")
+        raise
+
+
+def generate_carousel_with_ai_images(topic: str, nicho: str = "Geral", num_slides: int = 5, 
+                                      credentials=None, use_ai_images: bool = True) -> Dict:
+    """
+    Gera carrossel completo com texto (Gemini 3 Flash) e imagens (Nano Banana)
+    
+    Returns:
+        Dict com slides e imagens geradas por IA
+    """
+    # Gera o conteúdo textual
+    slides = generate_carousel_content(topic, nicho, num_slides, credentials)
+    
+    result = {
+        "slides": slides,
+        "images": [],
+        "model_used": GEMINI_MODELS["reasoning"]
+    }
+    
+    # Gera imagens com Nano Banana se habilitado
+    if use_ai_images and GENAI_AVAILABLE:
+        api_key = os.getenv("GEMINI_API_KEY")
+        if api_key:
+            for slide in slides:
+                try:
+                    visual_prompt = slide.get("visual_suggestion", f"Imagem para slide sobre {topic}")
+                    image_bytes = generate_image_with_nano_banana(visual_prompt, "cinematic", api_key)
+                    result["images"].append({
+                        "slide_number": slide["slide_number"],
+                        "image_data": base64.b64encode(image_bytes).decode('utf-8')
+                    })
+                except Exception as e:
+                    print(f"Erro ao gerar imagem para slide {slide['slide_number']}: {e}")
+                    result["images"].append({
+                        "slide_number": slide["slide_number"],
+                        "image_data": None,
+                        "error": str(e)
+                    })
+    
+    return result
+
+
+# Funções de compatibilidade (mantidas para não quebrar código existente)
+def gerar_conteudo_carrossel(tema: str, nicho: str = "Desenvolvimento Pessoal", num_slides: int = 5) -> list:
+    """Wrapper de compatibilidade"""
+    return generate_carousel_content(tema, nicho, num_slides)

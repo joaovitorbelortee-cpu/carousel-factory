@@ -33,7 +33,8 @@
 1. [x] Integrar Gemini API para conteúdo dinâmico.
 2. [x] Criar gerador de carrosséis com layout 1080x1350.
 3. [x] Implementar aba de carrosséis no Painel Web.
-4. [ ] Iniciar geração massiva para alimentar seu perfil @modocaverna (Próximo Passo).
+4. [x] Iniciar geração massiva para alimentar seu perfil @modocaverna (Implementado em `mass_orchestrator.py`).
+
 
 ---
 

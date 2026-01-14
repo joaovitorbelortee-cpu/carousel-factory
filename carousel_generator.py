@@ -15,7 +15,14 @@ logger = get_logger()
 
 # Configurações
 CAROUSEL_SIZE = (1080, 1350)  # Instagram/TikTok optimal
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output", "carousels")
+
+# Detectar ambiente serverless (Vercel)
+IS_SERVERLESS = bool(os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'))
+
+if IS_SERVERLESS:
+    OUTPUT_DIR = "/tmp/output/carousels"
+else:
+    OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output", "carousels")
 
 # Templates de estilo
 STYLES = {
@@ -27,30 +34,34 @@ STYLES = {
 }
 
 def get_font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
-    """Carrega fonte do sistema com suporte multiplataforma (Windows/Vercel Linux)."""
+    """Carrega fonte com prioridade para assets locais, depois sistema."""
+    
+    # 1. Tentar fonte bundled (Ideal para Vercel)
+    local_font = os.path.join(os.path.dirname(__file__), "assets", "fonts", "BebasNeue-Regular.ttf")
+    if os.path.exists(local_font):
+        try:
+            return ImageFont.truetype(local_font, size)
+        except Exception as e:
+            logger.warning(f"Erro ao carregar fonte local: {e}")
+
+    # 2. Fontes do Sistema (Fallback)
     font_paths = [
         # Windows
         "C:/Windows/Fonts/segoeuib.ttf" if bold else "C:/Windows/Fonts/segoeui.ttf",
         "C:/Windows/Fonts/arialbd.ttf" if bold else "C:/Windows/Fonts/arial.ttf",
-        # Linux (Vercel)
+        # Linux (Vercel/AWS)
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation/LiberationSans.ttf",
-        "/usr/share/fonts/truetype/noto/NotoSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/noto/NotoSans.ttf",
     ]
     
     for path in font_paths:
         if os.path.exists(path):
             try:
                 return ImageFont.truetype(path, size)
-            except Exception as e:
-                logger.debug(f"Falha ao carregar fonte {path}: {e}")
+            except Exception:
                 continue
     
-    # Fallback final
-    try:
-        return ImageFont.load_default()
-    except:
-        return None
+    # 3. Fallback final
+    return ImageFont.load_default()
 
 def create_gradient_bg(size: tuple, color_start: tuple, color_end: tuple) -> Image.Image:
     """Cria background com gradiente vertical."""

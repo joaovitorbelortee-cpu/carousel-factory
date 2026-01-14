@@ -329,8 +329,13 @@ HTML_TEMPLATE = '''
 
 # --- MIDDLEWARE AUTH ---
 def verify_firebase_token():
+    # Só ignora se explicitamente configurado para DEBUG_AUTH=true no .env
+    if os.getenv("DEBUG_AUTH", "false").lower() == "true":
+        return True
+        
     if not FIREBASE_ENABLED:
-        return True # Ignora auth se firebase nao estiver configurado (DEV ONLY)
+        logger.warning("Firebase não está habilitado. Negando acesso por segurança.")
+        return False
         
     auth_header = request.headers.get('Authorization')
     if not auth_header or not auth_header.startswith('Bearer '):
@@ -390,7 +395,7 @@ def google_login():
             }
         },
         scopes=scopes,
-        redirect_uri=url_for('oauth2callback', _external=True) # Tenta gerar automatico
+        redirect_uri=url_for('oauth2callback', _external=True)
     )
     
     authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes='true')

@@ -18,6 +18,8 @@ try:
     from main import run_full_pipeline
     import config
     from trend_researcher import research_before_creating
+    from gemini_integration import generate_carousel_content, TEMAS_POR_NICHO
+    from carousel_generator import generate_carousel
 except ImportError as e:
     st.error(f"Erro crítico ao importar módulos do projeto: {e}")
     st.stop()
@@ -175,8 +177,9 @@ with col4:
 st.markdown("--- ")
 
 # Tabs
-tab_gen, tab_trends, tab_gallery, tab_logs = st.tabs([
-    "🚀 Gerador de Conteúdo", 
+tab_gen, tab_carousel, tab_trends, tab_gallery, tab_logs = st.tabs([
+    "🚀 Gerador de Vídeos", 
+    "🎡 Gerador de Carrosséis",
     "📈 Análise de Trends", 
     "🎬 Galeria de Vídeos", 
     "⚙️ Logs & Console"
@@ -249,10 +252,49 @@ with tab_gen:
                          with cols[i % 3]:
                             st.video(v)
             
-            except Exception as e:
-                status_container.update(label="❌ Erro Fatal", state="error")
-                st.error(f"Falha na execução: {str(e)}")
-                st.exception(e)
+# -----------------------------------------------------------------------------
+# TAB: CAROUSEL GENERATOR
+# -----------------------------------------------------------------------------
+with tab_carousel:
+    st.markdown("### 🎡 Fábrica de Carrosséis Virais")
+    st.markdown("Gere carrosséis de alta conversão (1080x1350) com estética 'Modo Caverna'.")
+    
+    col_c1, col_c2 = st.columns([1, 2])
+    
+    with col_c1:
+        c_nicho = st.selectbox("Nicho do Carrossel", options=list(TEMAS_POR_NICHO.keys()))
+        c_topic = st.text_input("Tema Específico", placeholder="Ex: A Farsa da Faculdade")
+        c_slides = st.slider("Qtd Slides", 3, 10, 5)
+        c_style = st.selectbox("Estilo Visual", ["caverna", "dark_purple", "dark_gold"])
+        
+        gen_c_btn = st.button("🎡 GERAR CARROSSEL", type="primary", use_container_width=True)
+        
+    with col_c2:
+        if gen_c_btn:
+            with st.status("🔮 Gerando conteúdo com IA...", expanded=True) as status:
+                try:
+                    # 1. Gerar Texto
+                    status.write("✍️ Criando roteiro estratégico...")
+                    slides_data = generate_carousel_content(c_topic if c_topic else "Mentalidade", c_nicho, c_slides)
+                    
+                    # 2. Gerar Imagens
+                    status.write("🎨 Renderizando slides premium...")
+                    folder_name = f"{c_nicho}_{datetime.now().strftime('%H%M%S')}"
+                    paths = generate_carousel(slides_data, c_style, folder_name)
+                    
+                    status.update(label="✅ Carrossel Pronto!", state="complete")
+                    st.success(f"Carrossel gerado com {len(paths)} slides!")
+                    
+                    # Preview
+                    st.subheader("🖼️ Preview dos Slides")
+                    c_cols = st.columns(3)
+                    for i, p in enumerate(paths):
+                        with c_cols[i % 3]:
+                            st.image(p)
+                            
+                except Exception as e:
+                    status.update(label="❌ Erro na Geração", state="error")
+                    st.error(str(e))
 
 # -----------------------------------------------------------------------------
 # TAB 2: TREND ANALYSIS

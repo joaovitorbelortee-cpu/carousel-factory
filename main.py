@@ -13,6 +13,7 @@ import sys
 import shutil
 from datetime import datetime
 from typing import List, Dict
+from concurrent.futures import ThreadPoolExecutor
 
 # Configurar encoding para Windows
 if sys.platform == "win32":
@@ -104,42 +105,39 @@ def get_narration_text(video: Dict) -> str:
 
 async def generate_single_video(video: Dict) -> str:
     """
-    Gera um único vídeo completo.
-    
-    Returns:
-        Caminho do vídeo gerado
+    Gera um único vídeo completo com processamento paralelo.
     """
     video_id = video["id"]
     niche_slug = video.get("niche", "default").replace(" ", "_").lower()[:20]
     video_path = os.path.join(OUTPUT_DIR, f"{niche_slug}_{video_id}_final.mp4")
     
-    # Cache Check
     if os.path.exists(video_path):
         logger.info(f"⏭️ Vídeo {video_id} já existe! Pulando geração.")
         return video_path
 
-    logger.info(f"\n{'='*60}")
-    logger.info(f"🎬 VÍDEO {video_id}: {video['title']}")
-    logger.info(f"{ '='*60}")
+    logger.info(f"\n{'='*60}\n🎬 VÍDEO {video_id}: {video['title']}\n{'='*60}")
     
-    # 1. Gerar texto de narração
     script = get_narration_text(video)
-    logger.info(f"📜 Roteiro preparado ({len(script)} caracteres)")
-    
-    # 2. Gerar áudio
     audio_path = os.path.join(OUTPUT_DIR, f"audio_{niche_slug}_{video_id}.mp3")
-    if not os.path.exists(audio_path):
-        logger.info(f"🔊 Gerando áudio...")
-        await generate_audio(script, audio_path, voice="masculina", rate="+15%")
-    else:
-        logger.info(f"⏭️ Áudio já existe. Usando cache.")
     
-    # 3. Gerar imagens
-    logger.info(f"🖼️ Gerando imagens...")
-    images = generate_all_images_for_video(video, ASSETS_DIR)
-    logger.info(f"   → {len(images)} imagens prontas")
-    
-    # 4. Montar vídeo
+    # Processamento Paralelo: Áudio + Imagens
+    logger.info("⚡ Iniciando geração paralela (Áudio + Imagens)...")
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        # Geração de Áudio (Thread 1)
+        if not os.path.exists(audio_path):
+            audio_task = asyncio.create_task(generate_audio(script, audio_path, voice="masculina", rate="+15%"))
+        else:
+            audio_task = None
+            
+        # Geração de Imagens (Thread 2)
+        # Como generate_all_images_for_video é síncrono, rodamos no executor
+        image_future = executor.submit(generate_all_images_for_video, video, ASSETS_DIR)
+        
+        if audio_task:
+            await audio_task
+        
+        images = image_future.result()
+
     logger.info(f"🎥 Montando vídeo final...")
     create_video_from_images_and_audio(images, audio_path, video_path)
     
