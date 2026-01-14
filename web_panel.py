@@ -3,7 +3,7 @@ Carousel Factory v6.0 - Firebase Edition
 Fabrica de Carrosseis Virais com IA + Autenticacao Firebase
 """
 
-from flask import Flask, render_template_string, request, jsonify, send_from_directory, send_file, redirect, url_for
+from flask import Flask, render_template_string, request, jsonify, send_from_directory, send_file, redirect, url_for, session
 import os
 import sys
 import io
