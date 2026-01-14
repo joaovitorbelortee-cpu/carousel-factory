@@ -57,10 +57,20 @@ if FIREBASE_AVAILABLE:
         FIREBASE_ENABLED = False
 else:
     FIREBASE_ENABLED = False
+# Detectar ambiente serverless (Vercel)
+IS_SERVERLESS = bool(os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'))
 
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
-CAROUSEL_DIR = os.path.join(OUTPUT_DIR, "carousels")
-os.makedirs(CAROUSEL_DIR, exist_ok=True)
+if IS_SERVERLESS:
+    OUTPUT_DIR = "/tmp/output"
+    CAROUSEL_DIR = "/tmp/output/carousels"
+else:
+    OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
+    CAROUSEL_DIR = os.path.join(OUTPUT_DIR, "carousels")
+
+try:
+    os.makedirs(CAROUSEL_DIR, exist_ok=True)
+except Exception as e:
+    logger.warning(f"Não foi possível criar diretório de output: {e}")
 
 # --- HTML TEMPLATE COM FIREBASE AUTH ---
 HTML_TEMPLATE = '''
