@@ -1,9 +1,26 @@
-from flask import Flask
+"""
+Carousel Factory v6.0 - Vercel Minimal Edition
+Step-by-step import isolation to find the crash source.
+"""
+from flask import Flask, jsonify
+import os
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return "Carousel Factory - Health Check OK"
+# --- IMPORT TEST: Each step will add one more import ---
+# Step 1: Basic imports (DONE - works)
+# Step 2: local imports
+import sys
+sys.path.insert(0, os.path.dirname(__file__) + '/..')
 
-# Vercel handler
+# Test: logger
+from logger import get_logger
+logger = get_logger()
+
+@app.route('/')
+def index():
+    return "Step 2: Logger loaded OK"
+
+@app.route('/health')
+def health():
+    return jsonify({"status": "ok", "step": 2})
