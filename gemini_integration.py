@@ -5,8 +5,14 @@ Integrado com Google Gemini API via OAuth ou API Key
 
 import os
 import random
-import google.generativeai as genai
 from typing import List, Dict
+
+try:
+    import google.generativeai as genai
+    GENAI_AVAILABLE = True
+except ImportError:
+    GENAI_AVAILABLE = False
+    print("google-generativeai não instalado ou configurado. IA desativada.")
 
 # Templates baseados no modelocarrosel.md (MANTIDO IGUAL)
 FORMATOS_MESTRES = {
@@ -137,6 +143,10 @@ def generate_carousel_content(topic: str, nicho: str = "Geral", num_slides: int 
     """
     Gera conteudo usando Gemini com credenciais OAuth ou API Key
     """
+    if not GENAI_AVAILABLE:
+        print("genai não disponível, retornando template fallback.")
+        return gerar_copy_template("diagnostico", topic, nicho)
+    
     try:
         model = None
         # Configura Gemini com as credenciais passadas (OAuth)
