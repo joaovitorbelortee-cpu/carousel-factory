@@ -8,8 +8,13 @@ import os
 import sys
 import io
 import zipfile
-import firebase_admin
-from firebase_admin import credentials, auth
+try:
+    import firebase_admin
+    from firebase_admin import credentials, auth
+    FIREBASE_AVAILABLE = True
+except ImportError:
+    FIREBASE_AVAILABLE = False
+    logger.warning("firebase-admin não instalado. Funcionalidades Firebase desativadas.")
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -26,18 +31,18 @@ logger = get_logger()
 app = Flask(__name__)
 
 # --- CONFIGURACAO FIREBASE ADMIN ---
-# Para rodar local ou deploy, precisa das credenciais.
-# Se nao tiver credenciais, o app roda mas a auth de backend falha (modo inseguro opcional para testes)
-try:
-    cred = credentials.Certificate("firebase-adminsdk.json") if os.path.exists("firebase-adminsdk.json") else None
-    if cred:
-        firebase_admin.initialize_app(cred)
-    else:
-        # Tenta inicializar sem credenciais explicitas (para Google Cloud/Render)
-        firebase_admin.initialize_app()
-    FIREBASE_ENABLED = True
-except Exception as e:
-    logger.warning(f"Firebase Admin nÃ£o inicializado: {e}. O backend nao validara tokens.")
+if FIREBASE_AVAILABLE:
+    try:
+        cred = credentials.Certificate("firebase-adminsdk.json") if os.path.exists("firebase-adminsdk.json") else None
+        if cred:
+            firebase_admin.initialize_app(cred)
+        else:
+            firebase_admin.initialize_app()
+        FIREBASE_ENABLED = True
+    except Exception as e:
+        logger.warning(f"Firebase Admin não inicializado: {e}. O backend nao validara tokens.")
+        FIREBASE_ENABLED = False
+else:
     FIREBASE_ENABLED = False
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")

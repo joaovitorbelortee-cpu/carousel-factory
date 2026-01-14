@@ -5,5 +5,5 @@ google-auth-oauthlib>=1.0.0
 google-auth>=2.0.0
 requests>=2.31.0
 python-dotenv>=1.0.0
-# Removido firebase-admin obrigatorio para evitar erros de build se nao usar
-# firebase-admin>=6.2.0 
+# Adicionado firebase-admin para suportar login Firebase
+firebase-admin>=6.2.0
